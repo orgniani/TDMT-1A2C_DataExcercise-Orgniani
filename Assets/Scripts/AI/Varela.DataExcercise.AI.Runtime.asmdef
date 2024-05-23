@@ -1,0 +1,16 @@
+{
+    "name": "Varela.DataExcercise.AI.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6a581ca88f27cc8428c332a4ede4eeaf"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

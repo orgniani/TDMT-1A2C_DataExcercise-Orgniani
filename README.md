@@ -1,5 +1,9 @@
 # TDMT-1A2C_DataExcercise-
-
+What's asked for this task:
+- Game Boot and additive scene control.
+- NavigationManager.
+- Event system (centralized/decentralized).
+- Reference system (refManager/DataSource).
 ### Clarifications
 - El código entregado puede estar basado en el dado en clase, pero debe ser más que una simple copia. De no aportar nada a lo visto en clase, el trabajo quedará automaticamente desaprobado.
 - Una lógica equivalente a la dificultad de los sistemas vistos en clase tendrá como resultado una nota aprobada de 4, pudiendo incrementar la nota resultado a partir de la complejidad de los sitemas, sus aportes extra y el pulido que se le otorgue.

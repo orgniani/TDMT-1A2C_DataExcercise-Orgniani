@@ -1,4 +1,4 @@
-# TDMT-1A2C_DataExcercise-
+# TDMT-1A2C_DataExcercise
 What's asked for this task:
 - Game Boot and additive scene control.
 - NavigationManager.

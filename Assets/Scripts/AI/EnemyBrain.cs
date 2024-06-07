@@ -1,39 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 using Core.Interactions;
+using UnityEngine;
 
-public class EnemyBrain : MonoBehaviour
+namespace AI
 {
-    [SerializeField] private float attackDistance;
-    private ITarget _target;
-    private ISteerable _directable;
-
-    private void Awake()
+    public class EnemyBrain : MonoBehaviour
     {
-        _directable = GetComponent<ISteerable>();
-        if( _directable == null)
-        {
-            Debug.LogError($"{name}: cannot find a {nameof(ISteerable)} component!");
-            enabled = false;
-        }
-    }
+        [SerializeField] private float attackDistance;
+        private ITarget _target;
+        private ISteerable _steerable;
 
-    private void Update()
-    {
-        //TODO: Add logic to get the target from a source/reference system
-        if (_target == null)
-            return;
-        //          AB        =         B        -          A
-        var directionToTarget = _target.transform.position - transform.position;
-        var distanceToTarget = directionToTarget.magnitude;
-        if (distanceToTarget < attackDistance)
+        private void Awake()
         {
-            _target.ReceiveAttack();
+            _steerable = GetComponent<ISteerable>();
+            if( _steerable == null)
+            {
+                Debug.LogError($"{name}: cannot find a {nameof(ISteerable)} component!");
+                enabled = false;
+            }
         }
-        else
+
+        private void Update()
         {
-            _directable.SetDirection(directionToTarget);
+            //TODO: Add logic to get the target from a source/reference system
+            if (_target == null)
+                return;
+            //          AB        =         B        -          A
+            var directionToTarget = _target.transform.position - transform.position;
+            var distanceToTarget = directionToTarget.magnitude;
+            if (distanceToTarget < attackDistance)
+            {
+                _target.ReceiveAttack();
+            }
+            else
+            {
+                _steerable.SetDirection(directionToTarget);
+            }
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, attackDistance);
         }
     }
 }

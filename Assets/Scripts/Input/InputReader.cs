@@ -8,21 +8,36 @@ public class InputReader : MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputActions;
     [SerializeField] private string moveActionName = "Move";
-    [SerializeField] private string attackActionName = "Attack";
+    [SerializeField] private string runActionName = "Run";
 
     private void OnEnable()
     {
-        inputActions.FindAction(moveActionName).performed += HandleMoveInput;
-        inputActions.FindAction(attackActionName).started += HandleAttackInput;
+        var moveAction = inputActions.FindAction(moveActionName);
+        if (moveAction != null)
+        {
+            moveAction.performed += HandleMoveInput;
+        }
+        var runAction = inputActions.FindAction(runActionName);
+        if (runAction != null)
+        {
+            runAction.started += HandleRunInputStarted;
+            runAction.canceled += HandleRunInputCanceled;
+        }
     }
 
-    private void HandleAttackInput(InputAction.CallbackContext context)
+    private void HandleRunInputStarted(InputAction.CallbackContext ctx)
     {
         //TODO: Implement event logic
-        Debug.Log($"{name}: Attack input pressed");
+        Debug.Log($"{name}: Run input started");
     }
 
-    private void HandleMoveInput(InputAction.CallbackContext context)
+    private void HandleRunInputCanceled(InputAction.CallbackContext ctx)
+    {
+        //TODO: Implement event logic
+        Debug.Log($"{name}: Run input canceled");
+    }
+
+    private void HandleMoveInput(InputAction.CallbackContext ctx)
     {
         //TODO: Implement event logic
         Debug.Log($"{name}: Move input performed");

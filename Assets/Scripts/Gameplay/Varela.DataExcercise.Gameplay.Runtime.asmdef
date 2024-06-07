@@ -1,0 +1,16 @@
+{
+    "name": "Varela.DataExcercise.Gameplay.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:12fcdb1f4b3c0fa45bb802b9716f0dc0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

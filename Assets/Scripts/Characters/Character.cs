@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Core.Interactions;
 
@@ -7,18 +5,25 @@ namespace Characters
 {
     public class Character : MonoBehaviour, ISteerable, ITarget
     {
-        private Vector3 _currentDirection;
-        [SerializeField] private float speed;
+        [SerializeField] private float speed = 2.5f;
+        [SerializeField] private float runningSpeed = 5;
+        private Vector3 _currentDirection = Vector3.zero;
+        private bool _isRunning = false;
 
         private void Update()
         {
-            transform.Translate(_currentDirection * (Time.deltaTime * speed), Space.Self);
+            var currentSpeed = _isRunning ? runningSpeed : speed;
+            transform.Translate(_currentDirection * (Time.deltaTime * currentSpeed), Space.Self);
         }
 
         public void SetDirection(Vector3 direction)
         {
             _currentDirection = direction;
         }
+
+        public void StartRunning() => _isRunning = true;
+
+        public void StopRunning() => _isRunning = false;
 
         public void ReceiveAttack()
         {

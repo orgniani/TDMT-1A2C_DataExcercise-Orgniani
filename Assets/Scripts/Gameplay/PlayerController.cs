@@ -16,7 +16,10 @@ namespace Gameplay
         private void Awake()
         {
             _character ??= GetComponent<Character>();
-            gameObject.SetActive(false);
+            if (_character)
+            {
+                _character.enabled = false;
+            }
         }
 
         private void OnEnable()
@@ -34,7 +37,7 @@ namespace Gameplay
         public void SetPlayerAtLevelStartAndEnable(Vector3 levelStartPosition)
         {
             transform.position = levelStartPosition;
-            gameObject.SetActive(true);
+            _character.enabled = true;
         }
         
         private void HandleMove(Vector2 direction)

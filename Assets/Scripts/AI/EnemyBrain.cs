@@ -34,7 +34,8 @@ namespace AI
             }
             else
             {
-                _steerable.SetDirection(directionToTarget);
+                Debug.DrawRay(transform.position, directionToTarget.normalized, Color.red);
+                _steerable.SetDirection(directionToTarget.normalized);
             }
         }
 

@@ -16,6 +16,7 @@ public class InputReader : MonoBehaviour
         if (moveAction != null)
         {
             moveAction.performed += HandleMoveInput;
+            moveAction.canceled += HandleMoveInput;
         }
         var runAction = inputActions.FindAction(runActionName);
         if (runAction != null)
@@ -40,6 +41,5 @@ public class InputReader : MonoBehaviour
     private void HandleMoveInput(InputAction.CallbackContext ctx)
     {
         //TODO: Implement event logic
-        Debug.Log($"{name}: Move input performed");
     }
 }

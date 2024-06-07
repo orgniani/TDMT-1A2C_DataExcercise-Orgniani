@@ -13,7 +13,7 @@ namespace Characters
         private void Update()
         {
             var currentSpeed = _isRunning ? runningSpeed : speed;
-            transform.Translate(_currentDirection * (Time.deltaTime * currentSpeed), Space.Self);
+            transform.Translate(_currentDirection * (Time.deltaTime * currentSpeed), Space.World);
         }
 
         public void SetDirection(Vector3 direction)

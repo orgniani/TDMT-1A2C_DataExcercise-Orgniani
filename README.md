@@ -13,8 +13,6 @@ What's asked for this task:
     - Se debe implementar un sistema de referencias que permita al enemigo conseguir la referencia al jugador.
     - Se debe implementar un sistema de eventos que comunique la lógica de input con la lógica de movimiento del personaje.
     - Al enemigo atrapar al personaje, se debe levantar un evento en el sistema a implementar que permita mostrar la pantalla de derrota con el menú para volver.
-- Al presionar el boton de ataque, el personaje debe atacar a su alrededor.
-    - La lógica para el ataque y el input serán provistas en la arquitectura base.
 - Tenemos un conjunto de escenas, formado principalmente por una escena raíz o boot, una escena de menus y una escena de juego.
     - Se debe proveer un sistema de control de escenas que contemple la posibilidad de cargar multiples escenas a la vez, con un nivel equivalente al trabajado en clase.
  

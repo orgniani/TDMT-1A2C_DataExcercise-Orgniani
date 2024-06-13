@@ -1,11 +1,7 @@
 {
-    "name": "Varela.DataExcercise.Gameplay.Runtime",
+    "name": "Varela.DataExcercise.DataSources.Runtime",
     "rootNamespace": "",
-    "references": [
-        "GUID:12fcdb1f4b3c0fa45bb802b9716f0dc0",
-        "GUID:7dd7bb3af69aeec498842c8e94510664",
-        "GUID:6c3a46033397c824295f7328834531b3"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

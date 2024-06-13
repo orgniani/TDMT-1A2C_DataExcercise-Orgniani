@@ -1,4 +1,3 @@
-using System;
 using Core.Interactions;
 using UnityEngine;
 
@@ -25,7 +24,7 @@ namespace AI
             //TODO: Add logic to get the target from a source/reference system
             if (_target == null)
                 return;
-            //          AB        =         B        -          A
+
             var directionToTarget = _target.transform.position - transform.position;
             var distanceToTarget = directionToTarget.magnitude;
             if (distanceToTarget < attackDistance)

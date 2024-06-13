@@ -219,7 +219,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 422.97, y: -156.13}
-  m_SizeDelta: {x: 845.9307, y: 312.2577}
+  m_SizeDelta: {x: 649.7, y: 312.2577}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &197254872
 MonoBehaviour:
@@ -241,9 +241,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Made by: <Student name>
-
-    Subject: '
+  m_text: "Made by: Orgniani\nSubject: Programaci\xF3n con Motores de Videojuegos
+    I"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -276,7 +275,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 46
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -332,13 +331,14 @@ GameObject:
   - component: {fileID: 276492855}
   - component: {fileID: 276492854}
   - component: {fileID: 276492853}
+  - component: {fileID: 276492856}
   m_Layer: 0
   m_Name: Credits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &276492852
 RectTransform:
   m_ObjectHideFlags: 0
@@ -422,6 +422,22 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &276492856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276492851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2752361d5fa37a40b26be0fcaacff02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonPrefab: {fileID: 2756952105697268499, guid: 4eea8cb9f11ce8b46a391d96b5446398, type: 3}
+  buttonParent: {fileID: 638507308}
+  ids:
+  - Main Menu
 --- !u!1 &388480087
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,6 +450,7 @@ GameObject:
   - component: {fileID: 388480091}
   - component: {fileID: 388480090}
   - component: {fileID: 388480089}
+  - component: {fileID: 388480092}
   m_Layer: 0
   m_Name: MainMenu
   m_TagString: Untagged
@@ -524,6 +541,25 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &388480092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388480087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2752361d5fa37a40b26be0fcaacff02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonPrefab: {fileID: 2756952105697268499, guid: 4eea8cb9f11ce8b46a391d96b5446398, type: 3}
+  buttonParent: {fileID: 930601871}
+  ids:
+  - Play
+  - Options
+  - Credits
+  - Exit
 --- !u!1 &638507307
 GameObject:
   m_ObjectHideFlags: 0
@@ -795,7 +831,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 1
   m_Spacing: 25
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
@@ -1295,13 +1331,14 @@ GameObject:
   - component: {fileID: 1462274428}
   - component: {fileID: 1462274427}
   - component: {fileID: 1462274426}
+  - component: {fileID: 1462274429}
   m_Layer: 0
   m_Name: Options
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1462274425
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1385,6 +1422,22 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1462274429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1462274424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2752361d5fa37a40b26be0fcaacff02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonPrefab: {fileID: 2756952105697268499, guid: 4eea8cb9f11ce8b46a391d96b5446398, type: 3}
+  buttonParent: {fileID: 30434495}
+  ids:
+  - Main Menu
 --- !u!1 &1491335514
 GameObject:
   m_ObjectHideFlags: 0
@@ -1394,6 +1447,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1491335515}
+  - component: {fileID: 1491335516}
   m_Layer: 0
   m_Name: Navigation
   m_TagString: Untagged
@@ -1419,6 +1473,29 @@ Transform:
   - {fileID: 276492852}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1491335516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491335514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c30ef516ef5d77b42908ae7e3125ed24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menusWithId:
+  - <ID>k__BackingField: Main Menu
+    <Menu>k__BackingField: {fileID: 388480092}
+  - <ID>k__BackingField: Options
+    <Menu>k__BackingField: {fileID: 1462274429}
+  - <ID>k__BackingField: Credits
+    <Menu>k__BackingField: {fileID: 276492856}
+  gameManagerDataSource: {fileID: 11400000, guid: f7c65f59e3bea6a489b5a45d60b1c9a1, type: 2}
+  idsToTellGameManager:
+  - Play
+  - Exit
 --- !u!1 &2018697421
 GameObject:
   m_ObjectHideFlags: 0

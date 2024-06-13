@@ -1,45 +1,46 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputReader : MonoBehaviour
+namespace Input
 {
-    [SerializeField] private InputActionAsset inputActions;
-    [SerializeField] private string moveActionName = "Move";
-    [SerializeField] private string runActionName = "Run";
-
-    private void OnEnable()
+    public class InputReader : MonoBehaviour
     {
-        var moveAction = inputActions.FindAction(moveActionName);
-        if (moveAction != null)
+        [SerializeField] private InputActionAsset inputActions;
+        [SerializeField] private string moveActionName = "Move";
+        [SerializeField] private string runActionName = "Run";
+
+        private void OnEnable()
         {
-            moveAction.performed += HandleMoveInput;
-            moveAction.canceled += HandleMoveInput;
+            var moveAction = inputActions.FindAction(moveActionName);
+            if (moveAction != null)
+            {
+                moveAction.performed += HandleMoveInput;
+                moveAction.canceled += HandleMoveInput;
+            }
+            var runAction = inputActions.FindAction(runActionName);
+            if (runAction != null)
+            {
+                runAction.started += HandleRunInputStarted;
+                runAction.canceled += HandleRunInputCanceled;
+            }
+            //TODO: Unsubcribe to these events - SF (self added)
         }
-        var runAction = inputActions.FindAction(runActionName);
-        if (runAction != null)
+
+        private void HandleRunInputStarted(InputAction.CallbackContext ctx)
         {
-            runAction.started += HandleRunInputStarted;
-            runAction.canceled += HandleRunInputCanceled;
+            //TODO: Implement event logic
+            Debug.Log($"{name}: Run input started");
         }
-    }
 
-    private void HandleRunInputStarted(InputAction.CallbackContext ctx)
-    {
-        //TODO: Implement event logic
-        Debug.Log($"{name}: Run input started");
-    }
+        private void HandleRunInputCanceled(InputAction.CallbackContext ctx)
+        {
+            //TODO: Implement event logic
+            Debug.Log($"{name}: Run input canceled");
+        }
 
-    private void HandleRunInputCanceled(InputAction.CallbackContext ctx)
-    {
-        //TODO: Implement event logic
-        Debug.Log($"{name}: Run input canceled");
-    }
-
-    private void HandleMoveInput(InputAction.CallbackContext ctx)
-    {
-        //TODO: Implement event logic
+        private void HandleMoveInput(InputAction.CallbackContext ctx)
+        {
+            //TODO: Implement event logic
+        }
     }
 }

@@ -11,13 +11,13 @@ namespace Scenery
         [SerializeField] private DataSource<SceneryManager> sceneryManagerDataSource;
         [SerializeField] private Level defaultLevel;
         private Level _currentLevel;
-        public event Action onLoading = delegate { };
 
+        public event Action OnLoadStart = delegate { };
         /// <summary>
         /// The float given is always between 0 and 1
         /// </summary>
-        public event Action<float> onLoadPercentage = delegate { };
-        public event Action onLoaded = delegate { };
+        public event Action<float> OnLoadPercentage = delegate { };
+        public event Action OnLoadEnd = delegate { };
 
         private void OnEnable()
         {
@@ -46,43 +46,48 @@ namespace Scenery
 
         private IEnumerator ChangeLevel(Level currentLevel, Level newLevel)
         {
-            onLoading();
-            onLoadPercentage(0);
+            OnLoadStart();
+            OnLoadPercentage(0);
+
             var unloadCount = currentLevel.SceneNames.Count;
             var loadCount = newLevel.SceneNames.Count;
             var total = unloadCount + loadCount;
+
+            //TODO: Serialize the waiting seconds -SF
             yield return new WaitForSeconds(2);
-            yield return Unload(currentLevel,
-                currentIndex => onLoadPercentage((float)currentIndex / total));
+
+            yield return Unload(currentLevel, currentIndex => OnLoadPercentage((float)currentIndex / total));
+
             yield return new WaitForSeconds(2);
-            yield return Load(newLevel,
-                currentIndex => onLoadPercentage((float)(currentIndex + unloadCount) / total));
+
+            yield return Load(newLevel, currentIndex => OnLoadPercentage((float)(currentIndex + unloadCount) / total));
+
             yield return new WaitForSeconds(2);
 
             _currentLevel = newLevel;
-            onLoaded();
+            OnLoadEnd();
         }
 
         private IEnumerator LoadFirstLevel(Level level)
         {
-            //This is a cheating value, do not use in production!
+            //TODO: This is a cheating value, do not use in production!
             var addedWeight = 5;
 
-            onLoading();
-            onLoadPercentage(0);
+            OnLoadStart();
+            OnLoadPercentage(0);
             var total = level.SceneNames.Count + addedWeight;
             var current = 0;
             yield return Load(level,
-                currentIndex => onLoadPercentage((float)currentIndex / total));
+                currentIndex => OnLoadPercentage((float)currentIndex / total));
 
-            //This is cheating so the screen is shown over a lot of time :)
+            //TODO: This is cheating so the screen is shown over a lot of time :)
             for (; current <= total; current++)
             {
                 yield return new WaitForSeconds(1);
-                onLoadPercentage((float)current / total);
+                OnLoadPercentage((float)current / total);
             }
             _currentLevel = level;
-            onLoaded();
+            OnLoadEnd();
         }
 
         private IEnumerator Load(Level level, Action<int> onLoadedSceneQtyChanged)
@@ -90,6 +95,8 @@ namespace Scenery
             var current = 0;
             foreach (var sceneName in level.SceneNames)
             {
+                //TODO: Null check if load op is null -SF
+
                 var loadOp = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
                 yield return new WaitUntil(() => loadOp.isDone);
                 current++;

@@ -1,4 +1,6 @@
 using Characters;
+using DataSources;
+using Events;
 using UnityEngine;
 
 namespace Gameplay
@@ -8,6 +10,8 @@ namespace Gameplay
     {
         private Character _character;
 
+        [SerializeField] private DataSource<PlayerController> playerDataSource;
+
         private void Reset()
         {
             _character = GetComponent<Character>();
@@ -16,6 +20,7 @@ namespace Gameplay
         private void Awake()
         {
             _character ??= GetComponent<Character>();
+
             if (_character)
             {
                 _character.enabled = false;
@@ -25,13 +30,32 @@ namespace Gameplay
         private void OnEnable()
         {
             //TODO: Subscribe to inputs via event manager/event channel
-            //TODO: Set itself as player reference via ReferenceManager/DataSource
+
+            //if (EventManager<string>.Instance)
+            //    EventManager<string>.Instance.SubscribeToEvent(moveActionName, HandleMove);
+            //
+            //if (EventManager<string>.Instance)
+            //    EventManager<string>.Instance.SubscribeToEvent(runActionName, HandleRun);
+
+            //TODO: Set itself as player reference via ReferenceManager/DataSource | DONE
+            if (playerDataSource != null)
+                playerDataSource.Value = this;
         }
 
         private void OnDisable()
         {
             //TODO: Unsubscribe from all inputs via event manager/event channel
-            //TODO: Remove itself as player reference via reference manager/dataSource
+
+            //if (EventManager<string>.Instance)
+            //    EventManager<string>.Instance.UnsubscribeFromEvent(moveActionName, HandleMove);
+            //
+            //if (EventManager<string>.Instance)
+            //    EventManager<string>.Instance.UnsubscribeFromEvent(runActionName, HandleRun);
+
+
+            //TODO: Remove itself as player reference via reference manager/dataSource | DONE
+            if (playerDataSource != null)
+                playerDataSource.Value = null;
         }
 
         public void SetPlayerAtLevelStartAndEnable(Vector3 levelStartPosition)
@@ -39,7 +63,8 @@ namespace Gameplay
             transform.position = levelStartPosition;
             _character.enabled = true;
         }
-        
+       
+
         private void HandleMove(Vector2 direction)
         {
             _character.SetDirection(new Vector3(direction.x, 0, direction.y));

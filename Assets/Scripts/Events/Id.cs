@@ -1,13 +1,16 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public class Id : IId
+namespace Events
 {
-    [field: SerializeField] public string name { get; set; }
-
-    public override string ToString()
+    [Serializable]
+    public class Id : IId
     {
-        return name;
+        [field: SerializeField] public string name { get; set; }
+
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }

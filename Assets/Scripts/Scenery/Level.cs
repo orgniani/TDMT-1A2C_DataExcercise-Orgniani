@@ -7,7 +7,7 @@ namespace Scenery
     [Serializable]
     public class Level
     {
-        //TODO: Change SceneNames for something better (ids maybe??) - SF
+        //TODO: WATCH SCENERY MANAGEMENT CLASS AND CHANGE THIS -SF
         [field: SerializeField] public List<string> SceneNames { get; private set; }
     }
 }

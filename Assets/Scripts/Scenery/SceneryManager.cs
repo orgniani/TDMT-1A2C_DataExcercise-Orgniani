@@ -34,9 +34,7 @@ namespace Scenery
         private void OnDisable()
         {
             if (sceneryManagerDataSource != null && sceneryManagerDataSource.Value == this)
-            {
                 sceneryManagerDataSource.Value = null;
-            }
         }
 
         public void ChangeLevel(Level level)
@@ -56,7 +54,9 @@ namespace Scenery
             //TODO: Serialize the waiting seconds -SF
             yield return new WaitForSeconds(2);
 
-            yield return Unload(currentLevel, currentIndex => OnLoadPercentage((float)currentIndex / total));
+
+            //TODO: Uncommnet this, Menu scene should not unload but level 1 should -SF
+            //yield return Unload(currentLevel, currentIndex => OnLoadPercentage((float)currentIndex / total));
 
             yield return new WaitForSeconds(2);
 
@@ -70,7 +70,7 @@ namespace Scenery
 
         private IEnumerator LoadFirstLevel(Level level)
         {
-            //TODO: This is a cheating value, do not use in production!
+            //TODO: This is a cheating value, do not use in production! -SF
             var addedWeight = 5;
 
             OnLoadStart();
@@ -80,7 +80,7 @@ namespace Scenery
             yield return Load(level,
                 currentIndex => OnLoadPercentage((float)currentIndex / total));
 
-            //TODO: This is cheating so the screen is shown over a lot of time :)
+            //TODO: This is cheating so the screen is shown over a lot of time :) -SF
             for (; current <= total; current++)
             {
                 yield return new WaitForSeconds(1);

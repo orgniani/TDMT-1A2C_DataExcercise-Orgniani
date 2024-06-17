@@ -10,12 +10,21 @@ namespace Events
     {
         private Dictionary<IdT, Action<IdT>> _events = new();
 
-        public void InvokeEvent(IdT eventIdentifier)
+        public void InvokeEvent<T>(IdT eventIdentifier, T param)
         {
             if (_events.TryGetValue(eventIdentifier, out var eventDelegate))
             {
-                eventDelegate?.Invoke(eventIdentifier);
-                Debug.Log($"{name}: Event ({eventIdentifier}) invoked");
+                if (eventDelegate is Action<T> typedDelegate)
+                {
+                    typedDelegate?.Invoke(param);
+                    Debug.Log($"{name}: Event ({eventIdentifier}) invoked with parameter {param}");
+                }
+
+                else
+                {
+                    //TODO: Check if this is whats happening here -SF
+                    Debug.LogError($"{name}: Event id ({eventIdentifier}) has a delegate with a different parameter type.");
+                }
             }
             else
                 Debug.LogWarning($"{name}: Event id ({eventIdentifier}) had no subscribers!");

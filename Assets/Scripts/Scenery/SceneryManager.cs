@@ -3,14 +3,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DataSources;
+using Events;
 
 namespace Scenery
 {
     public class SceneryManager : MonoBehaviour
     {
         [SerializeField] private DataSource<SceneryManager> sceneryManagerDataSource;
-        [SerializeField] private Level defaultLevel;
-        private Level _currentLevel;
+        [SerializeField] private SceneryLoadId[] levelIds; //This might not be necessary
+        private int[] _currentLevelIds;
 
         public event Action OnLoadStart = delegate { };
         /// <summary>
@@ -21,14 +22,29 @@ namespace Scenery
 
         private void OnEnable()
         {
+            if (EventManager<IId>.Instance)
+            {
+                foreach (var loadId in levelIds)
+                {
+                    if (loadId == null)
+                        continue;
+                    EventManager<IId>.Instance.SubscribeToEvent(loadId, HandleLoadScenery);
+                    //TODO: IT SHOULD BE DONE BY INVOKE EVENTMANAGER! -SF
+                }
+            }
+
             if (sceneryManagerDataSource != null)
                 sceneryManagerDataSource.Value = this;
         }
 
         private void Start()
         {
-            //TODO: Load default level -SF
-            StartCoroutine(LoadFirstLevel(defaultLevel));
+            foreach (var loadId in levelIds)
+            {
+                if (loadId == null)
+                    continue;
+                StartCoroutine(LoadSceneBatch(loadId.SceneIndexes));
+            }
         }
 
         private void OnDisable()
@@ -37,18 +53,27 @@ namespace Scenery
                 sceneryManagerDataSource.Value = null;
         }
 
-        public void ChangeLevel(Level level)
+        private void HandleLoadScenery(IId levelId)
         {
-            StartCoroutine(ChangeLevel(_currentLevel, level));
+            if (levelId is SceneryLoadId)
+            {
+                var sceneryLoadId = levelId as SceneryLoadId;
+                StartCoroutine(LoadSceneBatch(sceneryLoadId.SceneIndexes));
+            }
         }
 
-        private IEnumerator ChangeLevel(Level currentLevel, Level newLevel)
+        public void ChangeLevel(int[] sceneIndexes)
+        {
+            StartCoroutine(ChangeLevel(_currentLevelIds, sceneIndexes));
+        }
+
+        private IEnumerator ChangeLevel(int[] currentSceneIndexes, int[] newSceneIndexes)
         {
             OnLoadStart();
             OnLoadPercentage(0);
 
-            var unloadCount = currentLevel.SceneNames.Count;
-            var loadCount = newLevel.SceneNames.Count;
+            var unloadCount = currentSceneIndexes.Length;
+            var loadCount = newSceneIndexes.Length;
             var total = unloadCount + loadCount;
 
             //TODO: Serialize the waiting seconds -SF
@@ -56,29 +81,32 @@ namespace Scenery
 
 
             //TODO: Uncommnet this, Menu scene should not unload but level 1 should -SF
-            //yield return Unload(currentLevel, currentIndex => OnLoadPercentage((float)currentIndex / total));
+            yield return Unload(currentSceneIndexes, currentIndex => OnLoadPercentage((float)currentIndex / total));
 
             yield return new WaitForSeconds(2);
 
-            yield return Load(newLevel, currentIndex => OnLoadPercentage((float)(currentIndex + unloadCount) / total));
+            yield return Load(newSceneIndexes, currentIndex => OnLoadPercentage((float)(currentIndex + unloadCount) / total));
 
             yield return new WaitForSeconds(2);
 
-            _currentLevel = newLevel;
+            _currentLevelIds = newSceneIndexes;
+
             OnLoadEnd();
         }
 
-        private IEnumerator LoadFirstLevel(Level level)
+        private IEnumerator LoadSceneBatch(int[] sceneIndexes)
         {
             //TODO: This is a cheating value, do not use in production! -SF
             var addedWeight = 5;
 
             OnLoadStart();
             OnLoadPercentage(0);
-            var total = level.SceneNames.Count + addedWeight;
+
+            var total = sceneIndexes.Length + addedWeight;
             var current = 0;
-            yield return Load(level,
-                currentIndex => OnLoadPercentage((float)currentIndex / total));
+
+            yield return Load(sceneIndexes,
+                currentIndex => OnLoadPercentage(0)); //TODO: I CHANGED THIS -SF
 
             //TODO: This is cheating so the screen is shown over a lot of time :) -SF
             for (; current <= total; current++)
@@ -86,30 +114,32 @@ namespace Scenery
                 yield return new WaitForSeconds(1);
                 OnLoadPercentage((float)current / total);
             }
-            _currentLevel = level;
+
+            _currentLevelIds = sceneIndexes;
             OnLoadEnd();
         }
 
-        private IEnumerator Load(Level level, Action<int> onLoadedSceneQtyChanged)
+        private IEnumerator Load(int[] sceneIndexes, Action<int> onLoadedSceneQtyChanged)
         {
             var current = 0;
-            foreach (var sceneName in level.SceneNames)
+
+            foreach (var sceneIndex in sceneIndexes)
             {
                 //TODO: Null check if load op is null -SF
 
-                var loadOp = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+                var loadOp = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
                 yield return new WaitUntil(() => loadOp.isDone);
                 current++;
                 onLoadedSceneQtyChanged(current);
             }
         }
 
-        private IEnumerator Unload(Level level, Action<int> onUnloadedSceneQtyChanged)
+        private IEnumerator Unload(int[] sceneIndexes, Action<int> onUnloadedSceneQtyChanged)
         {
             var current = 0;
-            foreach (var sceneName in level.SceneNames)
+            foreach (var sceneIndex in sceneIndexes)
             {
-                var loadOp = SceneManager.UnloadSceneAsync(sceneName);
+                var loadOp = SceneManager.UnloadSceneAsync(sceneIndex);
                 yield return new WaitUntil(() => loadOp.isDone);
                 current++;
                 onUnloadedSceneQtyChanged(current);

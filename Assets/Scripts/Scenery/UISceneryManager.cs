@@ -12,6 +12,8 @@ namespace Scenery
         [SerializeField] private Image loadingBarFill;
         [SerializeField] private float fillDuration = .25f;
 
+        private Coroutine currentFillCoroutine;
+
         private void Awake()
         {
             var sceneryManager = GetComponent<SceneryManager>();
@@ -23,33 +25,36 @@ namespace Scenery
         private void EnableLoadingScreen()
         {
             loadingScreen.enabled = true;
+            loadingBarFill.fillAmount = 0;
         }
 
         private void DisableLoadingScreen()
         {
-            Invoke(nameof(TurnOffLoadingScreen), fillDuration);
-        }
+            if (currentFillCoroutine != null)
+                StopCoroutine(currentFillCoroutine);
 
-        private void TurnOffLoadingScreen()
-        {
             loadingScreen.enabled = false;
         }
 
         private void UpdateLoadBarFill(float percentage)
         {
-            StartCoroutine(LerpFill(loadingBarFill.fillAmount, percentage));
+            if (currentFillCoroutine != null)
+                StopCoroutine(currentFillCoroutine);
+
+            currentFillCoroutine = StartCoroutine(LerpFill(loadingBarFill.fillAmount, percentage));
         }
 
         private IEnumerator LerpFill(float from, float to)
         {
-            var start = Time.time;
-            var now = start;
+            float startTime = Time.time;
+            float endTime = startTime + fillDuration;
+            float startFillAmount = loadingBarFill.fillAmount;
 
-            while (start + fillDuration > now)
+            while (Time.time < endTime)
             {
-                loadingBarFill.fillAmount = Mathf.Lerp(from, to, (now - start) / fillDuration);
+                float timeProgress = (Time.time - startTime) / fillDuration;
+                loadingBarFill.fillAmount = Mathf.Lerp(startFillAmount, to, timeProgress);
                 yield return null;
-                now = Time.time;
             }
 
             loadingBarFill.fillAmount = to;

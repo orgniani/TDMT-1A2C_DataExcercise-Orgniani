@@ -11,7 +11,11 @@ namespace Gameplay
 
         [SerializeField] private DataSource<GameManager> gameManagerDataSource;
         [SerializeField] private DataSource<SceneryManager> sceneryManagerDataSource;
-        [SerializeField] private Level level1;
+
+        //TODO: This should be handled by the Play button, giving the second batch of scenes -SF
+        [SerializeField] private int[] firstScenesToLoad;
+        //[SerializeField] private SceneryLoadId[] secondScenesToLoad;
+        //[SerializeField] private SceneryLoadId[] thirdScenesToLoad;
 
         private void OnEnable()
         {
@@ -32,10 +36,11 @@ namespace Gameplay
             if (id == playId)
             {
                 Debug.Log("PLAYER WANTS TO PLAY!");
+
                 //TODO: Start game logic - SF
                 if (sceneryManagerDataSource != null && sceneryManagerDataSource.Value != null)
                 {
-                    sceneryManagerDataSource.Value.ChangeLevel(level1);
+                    sceneryManagerDataSource.Value.ChangeLevel(firstScenesToLoad);
                 }
             }
             else if (id == exitId)

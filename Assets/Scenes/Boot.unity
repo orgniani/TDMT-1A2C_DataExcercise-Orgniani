@@ -228,9 +228,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneryManagerDataSource: {fileID: 11400000, guid: 39536954c436e27419221f9d81c74403, type: 2}
-  defaultLevel:
-    <SceneNames>k__BackingField:
-    - Menus
+  levelIds:
+  - {fileID: 11400000, guid: 5b30d16a037a82e4fa25ceb69eea443c, type: 2}
 --- !u!4 &188939471
 Transform:
   m_ObjectHideFlags: 0
@@ -295,10 +294,7 @@ MonoBehaviour:
   exitId: Exit
   gameManagerDataSource: {fileID: 11400000, guid: f7c65f59e3bea6a489b5a45d60b1c9a1, type: 2}
   sceneryManagerDataSource: {fileID: 11400000, guid: 39536954c436e27419221f9d81c74403, type: 2}
-  level1:
-    <SceneNames>k__BackingField:
-    - World
-    - Level1
+  firstScenesToLoad: 0200000003000000
 --- !u!4 &363640404
 Transform:
   m_ObjectHideFlags: 0

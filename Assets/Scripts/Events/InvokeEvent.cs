@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Events
 {
+    //TODO: DELETE -SF
     public class InvokeEvent : MonoBehaviour
     {
         [SerializeField] private IdContainer idContainer;

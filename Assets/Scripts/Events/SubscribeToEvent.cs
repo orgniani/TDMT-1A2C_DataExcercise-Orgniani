@@ -2,6 +2,8 @@ using UnityEngine;
 
 namespace Events
 {
+    //TODO: DELETE -SF
+
     public class SubscribeToEvent : MonoBehaviour
     {
         [SerializeField] private IdContainer idContainer;

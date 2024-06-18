@@ -1,5 +1,4 @@
 using Characters;
-using Core.Interactions;
 using DataSources;
 using Events;
 using UnityEngine;
@@ -7,13 +6,14 @@ using UnityEngine;
 namespace Gameplay
 {
     [RequireComponent(typeof(Character))]
-    public class PlayerController : MonoBehaviour, ITarget
+    public class PlayerController : MonoBehaviour
     {
-        private Character _character;
-
         [SerializeField] private DataSource<PlayerController> playerDataSource;
         [SerializeField] private string moveActionName = "Move";
         [SerializeField] private string runActionName = "Run";
+
+        private Character _character;
+        public Character Character => _character;
 
         private void Reset()
         {
@@ -32,13 +32,13 @@ namespace Gameplay
 
         private void OnEnable()
         {
-            //TODO: Subscribe to inputs via event manager/event channel
+            //TODO: Subscribe to inputs via event manager/event channel | DONE
 
             if (EventManager<string>.Instance)
+            {
                 EventManager<string>.Instance.SubscribeToEvent(moveActionName, OnMoveEvent);
-            
-            if (EventManager<string>.Instance)
                 EventManager<string>.Instance.SubscribeToEvent(runActionName, OnRunEvent);
+            }
 
             //TODO: Set itself as player reference via ReferenceManager/DataSource | DONE
             if (playerDataSource != null)
@@ -47,14 +47,13 @@ namespace Gameplay
 
         private void OnDisable()
         {
-            //TODO: Unsubscribe from all inputs via event manager/event channel
+            //TODO: Unsubscribe from all inputs via event manager/event channel | DONE
 
             if (EventManager<string>.Instance)
+            {
                 EventManager<string>.Instance.UnsubscribeFromEvent(moveActionName, OnMoveEvent);
-            
-            if (EventManager<string>.Instance)
                 EventManager<string>.Instance.UnsubscribeFromEvent(runActionName, OnRunEvent);
-
+            }
 
             //TODO: Remove itself as player reference via reference manager/dataSource | DONE
             if (playerDataSource != null)
@@ -69,7 +68,7 @@ namespace Gameplay
        
         private void OnMoveEvent(params object[] args)
         {
-            if(args.Length > 0 && args[0] is Vector2 direction)
+            if (args.Length > 0 && args[0] is Vector3 direction)
             {
                 HandleMove(direction);
             }
@@ -79,7 +78,7 @@ namespace Gameplay
         {
             if (args.Length > 0 && args[0] is bool shouldRun)
             {
-                HandleRun(shouldRun);
+                    HandleRun(shouldRun);
             }
         }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DataSources;
 using Gameplay;
-using UnityEngine.UIElements;
+using Events;
 
 namespace UI
 {
@@ -15,6 +15,18 @@ namespace UI
         [SerializeField] private DataSource<GameManager> gameManagerDataSource;
         [SerializeField] private List<string> idsToTellGameManager = new(); //TODO: Change name to a better one - SF
         private int _currentMenuIndex = 0;
+
+        [SerializeField] private string winActionName = "Win";
+        [SerializeField] private string loseActionName = "Lose";
+
+        private void OnEnable()
+        {
+            if (EventManager<string>.Instance)
+            {
+                EventManager<string>.Instance.SubscribeToEvent(winActionName, HandleOpenWinMenu);
+                EventManager<string>.Instance.SubscribeToEvent(loseActionName, HandleOpenLoseMenu);
+            }
+        }
 
         private void Start()
         {
@@ -35,11 +47,32 @@ namespace UI
             }
         }
 
+        private void OnDisable()
+        {
+            if (EventManager<string>.Instance)
+            {
+                EventManager<string>.Instance.UnsubscribeFromEvent(winActionName, HandleOpenWinMenu);
+                EventManager<string>.Instance.UnsubscribeFromEvent(loseActionName, HandleOpenLoseMenu);
+            }
+        }
+
+        private void HandleOpenWinMenu(params object[] args)
+        {
+            HandleChangeMenu(winActionName);
+        }
+
+        private void HandleOpenLoseMenu(params object[] args)
+        {
+            HandleChangeMenu(loseActionName);
+        }
+
+
         private void HandleChangeMenu(string id)
         {
             if (idsToTellGameManager.Contains(id) && gameManagerDataSource != null && gameManagerDataSource.Value != null)
             {
                 gameManagerDataSource.Value.HandleSpecialEvents(id);
+                menusWithId[_currentMenuIndex].Menu.gameObject.SetActive(false);
             }
 
             for (var i = 0; i < menusWithId.Count; i++)
@@ -61,8 +94,8 @@ namespace UI
         [Serializable]
         public struct MenuWithId
         {
-            [field:SerializeField] public string ID { get; set; }
-            [field: SerializeField] public Menu Menu { get; set; }
+            [field : SerializeField] public string ID { get; set; }
+            [field : SerializeField] public Menu Menu { get; set; }
         }
     }
 }

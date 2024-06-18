@@ -292,6 +292,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playId: Play
   exitId: Exit
+  restartId: Restart
+  winActionName: Win
+  loseActionName: Lose
   gameManagerDataSource: {fileID: 11400000, guid: f7c65f59e3bea6a489b5a45d60b1c9a1, type: 2}
   sceneryManagerDataSource: {fileID: 11400000, guid: 39536954c436e27419221f9d81c74403, type: 2}
   firstScenesToLoad: 0200000003000000

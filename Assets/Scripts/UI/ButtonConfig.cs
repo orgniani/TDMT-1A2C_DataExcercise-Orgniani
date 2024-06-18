@@ -4,7 +4,7 @@ using Events;
 
 namespace UI
 {
-    //TODO: DELETE THIS -SF
+    //TODO: WORK WITH THIS
     [CreateAssetMenu(menuName = "Config/Button", fileName = "ButtonConfig", order = 0)]
     public class ButtonConfig : ScriptableObject
     {

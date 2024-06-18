@@ -49,6 +49,16 @@ namespace Scenery
 
         private void OnDisable()
         {
+            if (EventManager<IId>.Instance)
+            {
+                foreach (var loadId in levelIds)
+                {
+                    if (loadId == null)
+                        continue;
+                    EventManager<IId>.Instance.UnsubscribeFromEvent(loadId, HandleLoadScenery);
+                }
+            }
+
             if (sceneryManagerDataSource != null && sceneryManagerDataSource.Value == this)
                 sceneryManagerDataSource.Value = null;
         }

@@ -51,7 +51,7 @@ namespace Input
 
         private void HandleRunInputStarted(InputAction.CallbackContext ctx)
         {
-            //TODO: Implement event logic
+            //TODO: Implement event logic | DONE
             Debug.Log($"{name}: Run input started");
 
             if (EventManager<string>.Instance)
@@ -60,7 +60,7 @@ namespace Input
 
         private void HandleRunInputCanceled(InputAction.CallbackContext ctx)
         {
-            //TODO: Implement event logic
+            //TODO: Implement event logic | DONE
             Debug.Log($"{name}: Run input canceled");
 
             if (EventManager<string>.Instance)
@@ -69,7 +69,7 @@ namespace Input
 
         private void HandleMoveInput(InputAction.CallbackContext ctx)
         {
-            //TODO: Implement event logic
+            //TODO: Implement event logic | DONE
 
             Vector3 inputDirection = ctx.ReadValue<Vector2>();
 

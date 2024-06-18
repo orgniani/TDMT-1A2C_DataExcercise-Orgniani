@@ -2,7 +2,10 @@
     "name": "Varela.DataExcercise.AI.Runtime",
     "rootNamespace": "",
     "references": [
-        "GUID:6a581ca88f27cc8428c332a4ede4eeaf"
+        "GUID:6a581ca88f27cc8428c332a4ede4eeaf",
+        "GUID:59f885493a92eb64793a9a33130f8397",
+        "GUID:7dd7bb3af69aeec498842c8e94510664",
+        "GUID:12fcdb1f4b3c0fa45bb802b9716f0dc0"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

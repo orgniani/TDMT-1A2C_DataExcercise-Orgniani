@@ -1080,6 +1080,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelStart: {fileID: 1517859829}
+  playerDataSource: {fileID: 11400000, guid: 1a74c3369aab0054eb119eb5c8be593e, type: 2}
 --- !u!4 &1420981759
 Transform:
   m_ObjectHideFlags: 0

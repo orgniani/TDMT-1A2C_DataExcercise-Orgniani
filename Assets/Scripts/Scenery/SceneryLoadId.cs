@@ -1,6 +1,7 @@
 using UnityEngine;
+using Events;
 
-namespace Events
+namespace Scenery
 {
     [CreateAssetMenu(menuName = "Models/Scenery load ID", fileName = "SceneryLoadId", order = 0)]
     public class SceneryLoadId : ScriptableObject, IId

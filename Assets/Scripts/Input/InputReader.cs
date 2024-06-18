@@ -38,14 +38,14 @@ namespace Input
         {
             if (moveAction != null)
             {
-                moveAction.performed += HandleMoveInput;
-                moveAction.canceled += HandleMoveInput;
+                moveAction.performed -= HandleMoveInput;
+                moveAction.canceled -= HandleMoveInput;
             }
 
             if (runAction != null)
             {
-                runAction.started += HandleRunInputStarted;
-                runAction.canceled += HandleRunInputCanceled;
+                runAction.started -= HandleRunInputStarted;
+                runAction.canceled -= HandleRunInputCanceled;
             }
         }
 

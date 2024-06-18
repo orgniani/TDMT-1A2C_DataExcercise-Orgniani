@@ -1,4 +1,5 @@
 using Characters;
+using Core.Interactions;
 using DataSources;
 using Events;
 using UnityEngine;
@@ -6,11 +7,13 @@ using UnityEngine;
 namespace Gameplay
 {
     [RequireComponent(typeof(Character))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, ITarget
     {
         private Character _character;
 
         [SerializeField] private DataSource<PlayerController> playerDataSource;
+        [SerializeField] private string moveActionName = "Move";
+        [SerializeField] private string runActionName = "Run";
 
         private void Reset()
         {
@@ -31,11 +34,11 @@ namespace Gameplay
         {
             //TODO: Subscribe to inputs via event manager/event channel
 
-            //if (EventManager<string>.Instance)
-            //    EventManager<string>.Instance.SubscribeToEvent(moveActionName, HandleMove);
-            //
-            //if (EventManager<string>.Instance)
-            //    EventManager<string>.Instance.SubscribeToEvent(runActionName, HandleRun);
+            if (EventManager<string>.Instance)
+                EventManager<string>.Instance.SubscribeToEvent(moveActionName, OnMoveEvent);
+            
+            if (EventManager<string>.Instance)
+                EventManager<string>.Instance.SubscribeToEvent(runActionName, OnRunEvent);
 
             //TODO: Set itself as player reference via ReferenceManager/DataSource | DONE
             if (playerDataSource != null)
@@ -46,11 +49,11 @@ namespace Gameplay
         {
             //TODO: Unsubscribe from all inputs via event manager/event channel
 
-            //if (EventManager<string>.Instance)
-            //    EventManager<string>.Instance.UnsubscribeFromEvent(moveActionName, HandleMove);
-            //
-            //if (EventManager<string>.Instance)
-            //    EventManager<string>.Instance.UnsubscribeFromEvent(runActionName, HandleRun);
+            if (EventManager<string>.Instance)
+                EventManager<string>.Instance.UnsubscribeFromEvent(moveActionName, OnMoveEvent);
+            
+            if (EventManager<string>.Instance)
+                EventManager<string>.Instance.UnsubscribeFromEvent(runActionName, OnRunEvent);
 
 
             //TODO: Remove itself as player reference via reference manager/dataSource | DONE
@@ -64,6 +67,21 @@ namespace Gameplay
             _character.enabled = true;
         }
        
+        private void OnMoveEvent(params object[] args)
+        {
+            if(args.Length > 0 && args[0] is Vector2 direction)
+            {
+                HandleMove(direction);
+            }
+        }
+
+        private void OnRunEvent(params object[] args)
+        {
+            if (args.Length > 0 && args[0] is bool shouldRun)
+            {
+                HandleRun(shouldRun);
+            }
+        }
 
         private void HandleMove(Vector2 direction)
         {
@@ -76,6 +94,11 @@ namespace Gameplay
                 _character.StartRunning();
             else
                 _character.StopRunning();
+        }
+
+        public void ReceiveAttack()
+        {
+
         }
     }
 }

@@ -53,11 +53,11 @@ namespace Scenery
                 sceneryManagerDataSource.Value = null;
         }
 
-        private void HandleLoadScenery(IId levelId)
+        private void HandleLoadScenery(params object[] levelId)
         {
-            if (levelId is SceneryLoadId)
+            if (levelId.Length > 0 && levelId[0] is SceneryLoadId)
             {
-                var sceneryLoadId = levelId as SceneryLoadId;
+                var sceneryLoadId = levelId[0] as SceneryLoadId;
                 StartCoroutine(LoadSceneBatch(sceneryLoadId.SceneIndexes));
             }
         }
@@ -80,8 +80,8 @@ namespace Scenery
             yield return new WaitForSeconds(2);
 
 
-            //TODO: Uncommnet this, Menu scene should not unload but level 1 should -SF
-            yield return Unload(currentSceneIndexes, currentIndex => OnLoadPercentage((float)currentIndex / total));
+            //TODO: Menu scene should not unload but level 1 should -SF
+            //yield return Unload(currentSceneIndexes, currentIndex => OnLoadPercentage((float)currentIndex / total));
 
             yield return new WaitForSeconds(2);
 

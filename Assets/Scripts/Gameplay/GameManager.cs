@@ -2,6 +2,8 @@ using UnityEngine;
 using DataSources;
 using Scenery;
 using Events;
+using Core;
+using UnityEngine.SceneManagement;
 
 namespace Gameplay
 {
@@ -14,28 +16,31 @@ namespace Gameplay
         [SerializeField] private DataSource<GameManager> gameManagerDataSource;
 
         //TODO: This should be handled by the Play button, giving the second batch of scenes -SF
-
-        [SerializeField] private SceneryLoadId[] levelsToLoad;
-
-        [SerializeField] private string loseActionName = "Lose";
-        [SerializeField] private string winActionName = "Win";
+        [SerializeField] private SceneryLoadId menuScene;
+        [SerializeField] private SceneryLoadId worldScene;
+        [SerializeField] private SceneryLoadId[] levels;
 
         private int _currentLevelIndex = 0;
+        private int[] _currentLevelIds;
 
         public bool IsFinalLevel { get; private set; }
 
         private void OnEnable()
         {
-            IsFinalLevel = false;
-
             if (gameManagerDataSource != null)
                 gameManagerDataSource.Value = this;
 
             if (EventManager<string>.Instance)
             {
-                EventManager<string>.Instance.SubscribeToEvent(winActionName, HandleChangeLevel);
-                EventManager<string>.Instance.SubscribeToEvent(loseActionName, HandleChangeLevel);
+                EventManager<string>.Instance.SubscribeToEvent(GameEvents.Win, OnGameOver);
+                EventManager<string>.Instance.SubscribeToEvent(GameEvents.Lose, OnGameOver);
             }
+        }
+
+        private void Start()
+        {
+            IsFinalLevel = false;
+            InvokeSceneryEvent(menuScene.SceneIndexes);
         }
 
         private void OnDisable()
@@ -45,27 +50,16 @@ namespace Gameplay
 
             if (EventManager<string>.Instance)
             {
-                EventManager<string>.Instance.UnsubscribeFromEvent(winActionName, HandleChangeLevel);
-                EventManager<string>.Instance.UnsubscribeFromEvent(loseActionName, HandleChangeLevel);
+                EventManager<string>.Instance.UnsubscribeFromEvent(GameEvents.Win, OnGameOver);
+                EventManager<string>.Instance.UnsubscribeFromEvent(GameEvents.Lose, OnGameOver);
             }
         }
 
-        private void HandleChangeLevel(params object[] args)
+        private void OnGameOver(params object[] args)
         {
-            if (args.Length > 0 && args[0] is bool)
+            if (!IsFinalLevel)
             {
-                if (_currentLevelIndex < levelsToLoad.Length)
-                {
-                    _currentLevelIndex++;
-                    InvokeSceneryEvent(_currentLevelIndex);
-                }
-
-                else
-                {
-                    InvokeSceneryEvent(1);
-                    IsFinalLevel = true;
-                    // Optionally, you can invoke some event or method to handle end-of-game logic here
-                }
+                NextLevel();
             }
         }
 
@@ -74,20 +68,41 @@ namespace Gameplay
             switch (id)
             {
                 case var _ when id == playId || id == restartId:
-                    InvokeSceneryEvent(0);
+                    IsFinalLevel = false;
+
+                    _currentLevelIndex = 0;
+                    InvokeSceneryEvent(worldScene.SceneIndexes);
+                    InvokeSceneryEvent(levels[_currentLevelIndex].SceneIndexes);
+                    _currentLevelIds = levels[_currentLevelIndex].SceneIndexes;
                     break;
+
                 case var _ when id == exitId:
                     ExitGame();
                     break;
             }
         }
 
-        private void InvokeSceneryEvent(int levelBundleIndex)
+        private void NextLevel()
         {
-            if (EventManager<IId>.Instance && levelsToLoad.Length > levelBundleIndex && levelsToLoad[levelBundleIndex] != null)
+            if (_currentLevelIndex < levels.Length - 1)
             {
-                EventManager<IId>.Instance.InvokeEvent(levelsToLoad[levelBundleIndex], levelsToLoad[levelBundleIndex].SceneIndexes);
+                _currentLevelIndex++;
+                InvokeSceneryEvent(levels[_currentLevelIndex].SceneIndexes);
+                _currentLevelIds = levels[_currentLevelIndex].SceneIndexes;
             }
+            else
+            {
+                IsFinalLevel = true;
+
+                EventManager<string>.Instance.InvokeEvent(GameEvents.UnloadScenery, _currentLevelIds);
+                EventManager<string>.Instance.InvokeEvent(GameEvents.UnloadScenery, worldScene.SceneIndexes);
+            }
+        }
+
+        private void InvokeSceneryEvent(int[] sceneIndexes)
+        {
+            if (EventManager<string>.Instance)
+                EventManager<string>.Instance.InvokeEvent(GameEvents.LoadScenery, sceneIndexes);
         }
 
         private void ExitGame()

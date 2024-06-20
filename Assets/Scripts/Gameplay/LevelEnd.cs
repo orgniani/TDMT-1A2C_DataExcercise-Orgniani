@@ -1,20 +1,24 @@
 using UnityEngine;
 using Events;
+using Core;
 
 namespace Gameplay
 {
     public class LevelEnd : MonoBehaviour
     {
-        [SerializeField] private string winActionName = "Win"; //TODO: SHOULD BE SOMETHING ELSE THAN A STRING MAYBE
+        [SerializeField] private LayerMask playerLayer;
 
         private void OnTriggerEnter(Collider other)
         {
             //TODO: Raise event through event system telling the game to show the win sequence. | DONE
 
-            if (EventManager<string>.Instance)
-                EventManager<string>.Instance.InvokeEvent(winActionName, true);
+            if (((1 << other.gameObject.layer) & playerLayer.value) != 0)
+            {
+                if (EventManager<string>.Instance)
+                    EventManager<string>.Instance.InvokeEvent(GameEvents.Win, true);
 
-            Debug.Log($"{name}: Player touched the flag!");
+                Debug.Log($"{name}: Player touched the flag!");
+            }
         }
     }
 }

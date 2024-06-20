@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b4c0994c789d2e4fbe5891c0eae3bf2, type: 3}
   m_Name: SceneryLoadId_Level2
   m_EditorClassIdentifier: 
-  logName: First Level
-  <SceneIndexes>k__BackingField: 0200000003000000
+  logName: SecondLevel
+  <SceneIndexes>k__BackingField: 04000000

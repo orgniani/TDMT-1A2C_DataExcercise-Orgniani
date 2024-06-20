@@ -1,5 +1,6 @@
 using UnityEngine;
 using Core.Interactions;
+using Core;
 using Events;
 
 namespace Characters
@@ -8,8 +9,6 @@ namespace Characters
     {
         [SerializeField] private float speed = 2.5f;
         [SerializeField] private float runningSpeed = 5;
-
-        [SerializeField] private string loseActionName = "Lose"; //TODO: SHOULD BE SOMETHING ELSE THAN A STRING MAYBE, maybe all actions names should be in a setup class -SF
 
         private Vector3 _currentDirection = Vector3.zero;
         private bool _isRunning = false;
@@ -34,7 +33,7 @@ namespace Characters
             //TODO: Raise event through event system telling the game to show the defeat sequence. | DONE
 
             if (EventManager<string>.Instance)
-                EventManager<string>.Instance.InvokeEvent(loseActionName, true);
+                EventManager<string>.Instance.InvokeEvent(GameEvents.Lose, true);
 
             Debug.Log($"{name}: received an attack!");
 

@@ -269,6 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   runningSpeed: 2
+  loseActionName: Lose
 --- !u!114 &1068601458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2000,6 +2001,10 @@ PrefabInstance:
     - target: {fileID: 7090879634005910778, guid: 6e1b7e3c385f49f4ca029d6f1e4237ab, type: 3}
       propertyPath: m_Name
       value: LevelEnd
+      objectReference: {fileID: 0}
+    - target: {fileID: 8671151960176144338, guid: 6e1b7e3c385f49f4ca029d6f1e4237ab, type: 3}
+      propertyPath: playerLayer.m_Bits
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

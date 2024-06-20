@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 2118192444}
   - component: {fileID: 2118192445}
   - component: {fileID: 2118192446}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -338,6 +338,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2.5
   runningSpeed: 5
+  loseActionName: Lose
 --- !u!114 &2118192445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,6 +352,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDataSource: {fileID: 11400000, guid: 1a74c3369aab0054eb119eb5c8be593e, type: 2}
+  moveActionName: Move
+  runActionName: Run
 --- !u!54 &2118192446
 Rigidbody:
   m_ObjectHideFlags: 0

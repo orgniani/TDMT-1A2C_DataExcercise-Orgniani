@@ -4,6 +4,7 @@ using UnityEngine;
 using DataSources;
 using Gameplay;
 using Events;
+using Core;
 
 namespace UI
 {
@@ -15,18 +16,15 @@ namespace UI
         [SerializeField] private DataSource<GameManager> gameManagerDataSource;
         [SerializeField] private List<string> idsToTellGameManager = new(); //TODO: Change name to a better one - SF
         
-        [SerializeField] private string loseActionName = "Lose"; //TODO: I also need to tell the sceneryManager to unload scened and load new ones!
-        [SerializeField] private string winActionName = "Win";
         
         private int _currentMenuIndex = 0;
-
 
         private void OnEnable()
         {
             if (EventManager<string>.Instance)
             {
-                EventManager<string>.Instance.SubscribeToEvent(winActionName, HandleOpenWinMenu);
-                EventManager<string>.Instance.SubscribeToEvent(loseActionName, HandleOpenLoseMenu);
+                EventManager<string>.Instance.SubscribeToEvent(GameEvents.Win, HandleOpenWinMenu);
+                EventManager<string>.Instance.SubscribeToEvent(GameEvents.Lose, HandleOpenLoseMenu);
             }
         }
 
@@ -51,21 +49,21 @@ namespace UI
         {
             if (EventManager<string>.Instance)
             {
-                EventManager<string>.Instance.UnsubscribeFromEvent(winActionName, HandleOpenWinMenu);
-                EventManager<string>.Instance.UnsubscribeFromEvent(loseActionName, HandleOpenLoseMenu);
+                EventManager<string>.Instance.UnsubscribeFromEvent(GameEvents.Win, HandleOpenWinMenu);
+                EventManager<string>.Instance.UnsubscribeFromEvent(GameEvents.Lose, HandleOpenLoseMenu);
             }
         }
 
         private void HandleOpenWinMenu(params object[] args)
         {
             if(gameManagerDataSource.Value.IsFinalLevel)
-                HandleChangeMenu(winActionName);
+                HandleChangeMenu(GameEvents.Win);
         }
 
         private void HandleOpenLoseMenu(params object[] args)
         {
             if (gameManagerDataSource.Value.IsFinalLevel)
-                HandleChangeMenu(loseActionName);
+                HandleChangeMenu(GameEvents.Lose);
         }
 
 

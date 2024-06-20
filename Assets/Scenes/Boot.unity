@@ -230,6 +230,8 @@ MonoBehaviour:
   sceneryManagerDataSource: {fileID: 11400000, guid: 39536954c436e27419221f9d81c74403, type: 2}
   levelIds:
   - {fileID: 11400000, guid: 5b30d16a037a82e4fa25ceb69eea443c, type: 2}
+  - {fileID: 11400000, guid: e43307ceb61fbdc46b4d27da1e57bb9a, type: 2}
+  - {fileID: 11400000, guid: d818544a81e2b874fb292cf8ef9c5e4b, type: 2}
 --- !u!4 &188939471
 Transform:
   m_ObjectHideFlags: 0
@@ -293,11 +295,12 @@ MonoBehaviour:
   playId: Play
   exitId: Exit
   restartId: Restart
-  winActionName: Win
-  loseActionName: Lose
   gameManagerDataSource: {fileID: 11400000, guid: f7c65f59e3bea6a489b5a45d60b1c9a1, type: 2}
-  sceneryManagerDataSource: {fileID: 11400000, guid: 39536954c436e27419221f9d81c74403, type: 2}
-  firstScenesToLoad: 0200000003000000
+  levelsToLoad:
+  - {fileID: 11400000, guid: d818544a81e2b874fb292cf8ef9c5e4b, type: 2}
+  - {fileID: 11400000, guid: e43307ceb61fbdc46b4d27da1e57bb9a, type: 2}
+  loseActionName: Lose
+  winActionName: Win
 --- !u!4 &363640404
 Transform:
   m_ObjectHideFlags: 0

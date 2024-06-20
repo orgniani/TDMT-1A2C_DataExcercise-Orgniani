@@ -2,6 +2,7 @@ using Core.Interactions;
 using UnityEngine;
 using DataSources;
 using Gameplay;
+using Characters;
 
 namespace AI
 {
@@ -10,7 +11,7 @@ namespace AI
         [SerializeField] private float attackDistance;
         [SerializeField] private DataSource<PlayerController> playerDataSource;
 
-        private ITarget _target;
+        private Character _target; //CHANGED BASE CODE // PERMISSION BY TEACHER GIVEN :D
         private ISteerable _steerable;
 
         private void Awake()
@@ -23,16 +24,18 @@ namespace AI
             }
         }
 
-        private void Update()
+        private void Start()
         {
-            //TODO: Add logic to get the target from a source/reference system | DONE
             if (playerDataSource != null && playerDataSource.Value != null)
             {
                 var playerController = playerDataSource.Value;
                 _target = playerController.Character;
             }
+        }
 
-
+        private void Update()
+        {
+            //TODO: Add logic to get the target from a source/reference system | DONE
             if (_target == null)
                 return;
 

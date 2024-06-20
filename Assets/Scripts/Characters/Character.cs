@@ -37,6 +37,8 @@ namespace Characters
                 EventManager<string>.Instance.InvokeEvent(loseActionName, true);
 
             Debug.Log($"{name}: received an attack!");
+
+            Destroy(gameObject);
         }
     }
 }

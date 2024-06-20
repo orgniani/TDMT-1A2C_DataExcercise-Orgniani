@@ -2035,8 +2035,8 @@ MonoBehaviour:
   - Play
   - Exit
   - Restart
-  winActionName: Win
   loseActionName: Lose
+  winActionName: Win
 --- !u!1 &1861204340
 GameObject:
   m_ObjectHideFlags: 0
@@ -2073,7 +2073,6 @@ MonoBehaviour:
   buttonParent: {fileID: 1415039951}
   ids:
   - Main Menu
-  - Next Level
 --- !u!224 &1861204342
 RectTransform:
   m_ObjectHideFlags: 0

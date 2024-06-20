@@ -14,10 +14,12 @@ namespace UI
 
         [SerializeField] private DataSource<GameManager> gameManagerDataSource;
         [SerializeField] private List<string> idsToTellGameManager = new(); //TODO: Change name to a better one - SF
+        
+        [SerializeField] private string loseActionName = "Lose"; //TODO: I also need to tell the sceneryManager to unload scened and load new ones!
+        [SerializeField] private string winActionName = "Win";
+        
         private int _currentMenuIndex = 0;
 
-        [SerializeField] private string winActionName = "Win";
-        [SerializeField] private string loseActionName = "Lose";
 
         private void OnEnable()
         {
@@ -31,6 +33,7 @@ namespace UI
         private void Start()
         {
             //TODO: Null check if menus with id list empty - SF
+            if (menusWithId == null || menusWithId.Count == 0) return;
 
             foreach (var menu in menusWithId)
             {
@@ -41,10 +44,7 @@ namespace UI
                 menu.Menu.gameObject.SetActive(false);
             }
 
-            if (menusWithId.Count > 0)
-            {
-                menusWithId[_currentMenuIndex].Menu.gameObject.SetActive(true);
-            }
+            menusWithId[_currentMenuIndex].Menu.gameObject.SetActive(true);
         }
 
         private void OnDisable()
@@ -58,12 +58,14 @@ namespace UI
 
         private void HandleOpenWinMenu(params object[] args)
         {
-            HandleChangeMenu(winActionName);
+            if(gameManagerDataSource.Value.IsFinalLevel)
+                HandleChangeMenu(winActionName);
         }
 
         private void HandleOpenLoseMenu(params object[] args)
         {
-            HandleChangeMenu(loseActionName);
+            if (gameManagerDataSource.Value.IsFinalLevel)
+                HandleChangeMenu(loseActionName);
         }
 
 
@@ -81,7 +83,11 @@ namespace UI
 
                 if (menuWithId.ID == id)
                 {
-                    //TODO: Add check to let the user know if _currentMenuIndex is bigger than menusWithId.Count - SF
+                    if (_currentMenuIndex >= menusWithId.Count)
+                    {
+                        Debug.Log($"{name}: CurrentMenuIndex {_currentMenuIndex} is out of bounds.");
+                        return;
+                    }
 
                     menusWithId[_currentMenuIndex].Menu.gameObject.SetActive(false);
                     menuWithId.Menu.gameObject.SetActive(true);

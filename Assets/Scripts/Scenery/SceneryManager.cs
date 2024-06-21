@@ -5,19 +5,22 @@ using UnityEngine.SceneManagement;
 using DataSources;
 using Core;
 using Events;
+using System.Linq;
 
 namespace Scenery
 {
     public class SceneryManager : MonoBehaviour
     {
         [SerializeField] private DataSource<SceneryManager> sceneryManagerDataSource;
-        [SerializeField] private SceneryLoadId[] allScenesIds; //TODO: get a new way to avoid unloading the menu -SF
+        [SerializeField] private SceneryLoadId[] allScenesIds; //TODO: maybe i can do this better -SF
+
+        [SerializeField] private float fakeLoadingTime = 1;
+        [SerializeField] private float delayPerScene = 0.5f;
+
+
         private int[] _currentLevelIds;
 
         public event Action OnLoadStart = delegate { };
-        /// <summary>
-        /// The float given is always between 0 and 1
-        /// </summary>
         public event Action<float> OnLoadPercentage = delegate { };
         public event Action OnLoadEnd = delegate { };
 
@@ -75,7 +78,6 @@ namespace Scenery
         {
             if (args.Length > 0 && args[0] is int[] newSceneIndexes)
             {
-                //TODO: CHECK TO SEE IF THIS COULD BE SIMPLIFIED -SF
                 if (_currentLevelIds != null && _currentLevelIds.Length > 0)
                 {
                     StartCoroutine(UnloadAndLoadScenes(_currentLevelIds, newSceneIndexes));
@@ -91,48 +93,43 @@ namespace Scenery
 
         private void HandleUnloadScenery(params object[] args)
         {
-            if (args.Length > 0 && args[0] is int[])
+            if (args.Length > 0 && args[0] is int[] newSceneIndexes)
             {
-                int[] sceneIndexesToUnload = (int[])args[0];
-
-                StartCoroutine(UnloadScenes(sceneIndexesToUnload));
+                if (_currentLevelIds != null)
+                {
+                    _currentLevelIds = new int[0];
+                    StartCoroutine(UnloadAndLoadScenes(newSceneIndexes, _currentLevelIds));
+                }
             }
         }
 
-        private IEnumerator UnloadAndLoadScenes(int[] currentSceneIndexes, int[] newSceneIndexes)
+        private IEnumerator UnloadAndLoadScenes(int[] unloadSceneIndexes, int[] loadSceneIndexes)
         {
             OnLoadStart?.Invoke();
             OnLoadPercentage?.Invoke(0);
 
-            int unloadCount = currentSceneIndexes.Length;
-            int loadCount = newSceneIndexes.Length;
+            int unloadCount = unloadSceneIndexes.Length;
+            int loadCount = loadSceneIndexes.Length;
             int totalCount = unloadCount + loadCount;
 
-            yield return Unload(currentSceneIndexes, currentIndex => OnLoadPercentage((float)currentIndex / totalCount));
+            if(unloadSceneIndexes.Length > 0)
+            {
+                yield return Unload(unloadSceneIndexes, currentIndex => OnLoadPercentage((float)currentIndex / totalCount));
 
-            yield return new WaitForSeconds(2);
+                yield return new WaitForSeconds(fakeLoadingTime);
 
-            yield return Load(newSceneIndexes, currentIndex => OnLoadPercentage((float)(currentIndex + unloadCount) / totalCount));
+                _currentLevelIds = allScenesIds[0].SceneIndexes;
 
-            yield return new WaitForSeconds(2);
+            }
 
-            _currentLevelIds = newSceneIndexes;
+            if(loadSceneIndexes.Length > 0)
+            {
+                yield return Load(loadSceneIndexes, currentIndex => OnLoadPercentage((float)(currentIndex + unloadCount) / totalCount));
 
-            OnLoadEnd?.Invoke();
-        }
+                yield return new WaitForSeconds(fakeLoadingTime);
 
-        private IEnumerator UnloadScenes(int[] currentSceneIndexes)
-        {
-            OnLoadStart?.Invoke();
-            OnLoadPercentage?.Invoke(0);
-
-            int unloadCount = currentSceneIndexes.Length;
-
-            yield return Unload(currentSceneIndexes, currentIndex => OnLoadPercentage((float)currentIndex / unloadCount));
-
-            yield return new WaitForSeconds(2);
-
-            _currentLevelIds = Array.Empty<int>();
+                _currentLevelIds = loadSceneIndexes;
+            }
 
             OnLoadEnd?.Invoke();
         }
@@ -140,7 +137,6 @@ namespace Scenery
         private IEnumerator Load(int[] sceneIndexes, Action<float> onLoadedSceneQtyChanged)
         {
             var current = 0;
-            float delayPerScene = 0.5f; // TODO: SERAILIZE -SF
 
             foreach (var sceneIndex in sceneIndexes)
             {
@@ -167,13 +163,13 @@ namespace Scenery
 
         private IEnumerator Unload(int[] sceneIndexes, Action<float> onLoadedSceneQtyChanged)
         {
-            if (sceneIndexes == allScenesIds[0].SceneIndexes) yield break; // avoid unloading the menu 
-
             var current = 0;
-            float delayPerScene = 0.5f; // TODO: SERAILIZE -SF
 
             foreach (var sceneIndex in sceneIndexes)
             {
+                var sceneryLoadId = allScenesIds.FirstOrDefault(s => s.SceneIndexes.Contains(sceneIndex));
+                if (sceneryLoadId != null && !sceneryLoadId.CanUnload) continue;
+
                 if (SceneManager.GetSceneByBuildIndex(sceneIndex).isLoaded)
                 {
                     var unloadOp = SceneManager.UnloadSceneAsync(sceneIndex);

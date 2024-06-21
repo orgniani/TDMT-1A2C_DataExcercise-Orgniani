@@ -8,6 +8,7 @@ namespace Scenery
     {
         [SerializeField] private string logName;
         [field: SerializeField] public int[] SceneIndexes { get; private set; }
+        [field: SerializeField] public bool CanUnload { get; private set; } = true;
 
         public override string ToString()
         {

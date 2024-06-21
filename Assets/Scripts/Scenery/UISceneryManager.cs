@@ -58,8 +58,6 @@ namespace Scenery
             }
 
             loadingBarFill.fillAmount = to;
-
-            yield return new WaitForSeconds(0.5f);
         }
     }
 

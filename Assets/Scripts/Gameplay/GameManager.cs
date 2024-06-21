@@ -3,7 +3,6 @@ using DataSources;
 using Scenery;
 using Events;
 using Core;
-using UnityEngine.SceneManagement;
 
 namespace Gameplay
 {
@@ -40,7 +39,7 @@ namespace Gameplay
         private void Start()
         {
             IsFinalLevel = false;
-            InvokeSceneryEvent(menuScene.SceneIndexes);
+            InvokeLoadSceneryEvent(menuScene.SceneIndexes);
         }
 
         private void OnDisable()
@@ -71,8 +70,8 @@ namespace Gameplay
                     IsFinalLevel = false;
 
                     _currentLevelIndex = 0;
-                    InvokeSceneryEvent(worldScene.SceneIndexes);
-                    InvokeSceneryEvent(levels[_currentLevelIndex].SceneIndexes);
+                    InvokeLoadSceneryEvent(worldScene.SceneIndexes);
+                    InvokeLoadSceneryEvent(levels[_currentLevelIndex].SceneIndexes);
                     _currentLevelIds = levels[_currentLevelIndex].SceneIndexes;
                     break;
 
@@ -87,22 +86,29 @@ namespace Gameplay
             if (_currentLevelIndex < levels.Length - 1)
             {
                 _currentLevelIndex++;
-                InvokeSceneryEvent(levels[_currentLevelIndex].SceneIndexes);
+                InvokeLoadSceneryEvent(levels[_currentLevelIndex].SceneIndexes);
                 _currentLevelIds = levels[_currentLevelIndex].SceneIndexes;
             }
             else
             {
                 IsFinalLevel = true;
 
-                EventManager<string>.Instance.InvokeEvent(GameEvents.UnloadScenery, _currentLevelIds);
-                EventManager<string>.Instance.InvokeEvent(GameEvents.UnloadScenery, worldScene.SceneIndexes);
+                InvokeUnloadSceneryEvent(levels[_currentLevelIndex].SceneIndexes);
+                InvokeUnloadSceneryEvent(worldScene.SceneIndexes);
+
             }
         }
 
-        private void InvokeSceneryEvent(int[] sceneIndexes)
+        private void InvokeLoadSceneryEvent(int[] sceneIndexes)
         {
             if (EventManager<string>.Instance)
                 EventManager<string>.Instance.InvokeEvent(GameEvents.LoadScenery, sceneIndexes);
+        }
+
+        private void InvokeUnloadSceneryEvent(int[] sceneIndexes)
+        {
+            if (EventManager<string>.Instance)
+                EventManager<string>.Instance.InvokeEvent(GameEvents.UnloadScenery, sceneIndexes);
         }
 
         private void ExitGame()

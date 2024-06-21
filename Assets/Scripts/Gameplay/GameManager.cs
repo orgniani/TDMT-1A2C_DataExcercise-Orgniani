@@ -8,19 +8,13 @@ namespace Gameplay
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private string playId = "Play";
-        [SerializeField] private string exitId = "Exit";
-        [SerializeField] private string restartId = "Restart";
-
         [SerializeField] private DataSource<GameManager> gameManagerDataSource;
 
-        //TODO: This should be handled by the Play button, giving the second batch of scenes -SF
         [SerializeField] private SceneryLoadId menuScene;
         [SerializeField] private SceneryLoadId worldScene;
         [SerializeField] private SceneryLoadId[] levels;
 
         private int _currentLevelIndex = 0;
-        private int[] _currentLevelIds;
 
         public bool IsFinalLevel { get; private set; }
 
@@ -31,14 +25,26 @@ namespace Gameplay
 
             if (EventManager<string>.Instance)
             {
-                EventManager<string>.Instance.SubscribeToEvent(GameEvents.Win, OnGameOver);
-                EventManager<string>.Instance.SubscribeToEvent(GameEvents.Lose, OnGameOver);
+                EventManager<string>.Instance.SubscribeToEvent(GameEvents.WinAction, OnGameOver);
+                EventManager<string>.Instance.SubscribeToEvent(GameEvents.LoseAction, OnGameOver);
             }
         }
 
         private void Start()
         {
             IsFinalLevel = false;
+
+            menuScene.CanUnload = true; //TODO: Get this to look better -SF
+            InvokeUnloadSceneryEvent(menuScene.SceneIndexes);
+            menuScene.CanUnload = false;
+
+            InvokeUnloadSceneryEvent(worldScene.SceneIndexes);
+
+            foreach(var level in levels)
+            {
+                InvokeUnloadSceneryEvent(level.SceneIndexes);
+            }
+
             InvokeLoadSceneryEvent(menuScene.SceneIndexes);
         }
 
@@ -49,8 +55,8 @@ namespace Gameplay
 
             if (EventManager<string>.Instance)
             {
-                EventManager<string>.Instance.UnsubscribeFromEvent(GameEvents.Win, OnGameOver);
-                EventManager<string>.Instance.UnsubscribeFromEvent(GameEvents.Lose, OnGameOver);
+                EventManager<string>.Instance.UnsubscribeFromEvent(GameEvents.WinAction, OnGameOver);
+                EventManager<string>.Instance.UnsubscribeFromEvent(GameEvents.LoseAction, OnGameOver);
             }
         }
 
@@ -62,23 +68,13 @@ namespace Gameplay
             }
         }
 
-        public void HandleSpecialEvents(string id)
+        public void HandlePlayGame()
         {
-            switch (id)
-            {
-                case var _ when id == playId || id == restartId:
-                    IsFinalLevel = false;
+            IsFinalLevel = false;
 
-                    _currentLevelIndex = 0;
-                    InvokeLoadSceneryEvent(worldScene.SceneIndexes);
-                    InvokeLoadSceneryEvent(levels[_currentLevelIndex].SceneIndexes);
-                    _currentLevelIds = levels[_currentLevelIndex].SceneIndexes;
-                    break;
-
-                case var _ when id == exitId:
-                    ExitGame();
-                    break;
-            }
+            _currentLevelIndex = 0;
+            InvokeLoadSceneryEvent(worldScene.SceneIndexes);
+            InvokeLoadSceneryEvent(levels[_currentLevelIndex].SceneIndexes);
         }
 
         private void NextLevel()
@@ -87,7 +83,6 @@ namespace Gameplay
             {
                 _currentLevelIndex++;
                 InvokeLoadSceneryEvent(levels[_currentLevelIndex].SceneIndexes);
-                _currentLevelIds = levels[_currentLevelIndex].SceneIndexes;
             }
             else
             {
@@ -109,15 +104,6 @@ namespace Gameplay
         {
             if (EventManager<string>.Instance)
                 EventManager<string>.Instance.InvokeEvent(GameEvents.UnloadScenery, sceneIndexes);
-        }
-
-        private void ExitGame()
-        {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
         }
     }
 }

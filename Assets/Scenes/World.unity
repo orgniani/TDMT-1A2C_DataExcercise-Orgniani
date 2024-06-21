@@ -96,7 +96,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000008, guid: 1af4e6a0baf6d4d44bca3402b6afdf28, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -338,7 +338,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2.5
   runningSpeed: 5
-  loseActionName: Lose
 --- !u!114 &2118192445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,8 +351,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDataSource: {fileID: 11400000, guid: 1a74c3369aab0054eb119eb5c8be593e, type: 2}
-  moveActionName: Move
-  runActionName: Run
 --- !u!54 &2118192446
 Rigidbody:
   m_ObjectHideFlags: 0

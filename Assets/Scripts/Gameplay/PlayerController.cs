@@ -2,6 +2,7 @@ using Characters;
 using DataSources;
 using Events;
 using UnityEngine;
+using Core;
 
 namespace Gameplay
 {
@@ -9,8 +10,6 @@ namespace Gameplay
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private DataSource<PlayerController> playerDataSource;
-        [SerializeField] private string moveActionName = "Move";
-        [SerializeField] private string runActionName = "Run";
 
         private Character _character;
         public Character Character => _character;
@@ -36,8 +35,8 @@ namespace Gameplay
 
             if (EventManager<string>.Instance)
             {
-                EventManager<string>.Instance.SubscribeToEvent(moveActionName, OnMoveEvent);
-                EventManager<string>.Instance.SubscribeToEvent(runActionName, OnRunEvent);
+                EventManager<string>.Instance.SubscribeToEvent(GameEvents.MoveAction, OnMoveEvent);
+                EventManager<string>.Instance.SubscribeToEvent(GameEvents.RunAction, OnRunEvent);
             }
 
             //TODO: Set itself as player reference via ReferenceManager/DataSource | DONE
@@ -51,8 +50,8 @@ namespace Gameplay
 
             if (EventManager<string>.Instance)
             {
-                EventManager<string>.Instance.UnsubscribeFromEvent(moveActionName, OnMoveEvent);
-                EventManager<string>.Instance.UnsubscribeFromEvent(runActionName, OnRunEvent);
+                EventManager<string>.Instance.UnsubscribeFromEvent(GameEvents.MoveAction, OnMoveEvent);
+                EventManager<string>.Instance.UnsubscribeFromEvent(GameEvents.RunAction, OnRunEvent);
             }
 
             //TODO: Remove itself as player reference via reference manager/dataSource | DONE

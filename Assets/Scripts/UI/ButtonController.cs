@@ -51,10 +51,10 @@ namespace UI
             _button.onClick.RemoveListener(HandleButtonClick);
         }
 
-        public void Setup(string label, string id, Action<string> onClick)
+        public void Setup(ButtonConfig config, Action<string> onClick)
         {
-            buttonText.SetText(label);
-            _id = id;
+            buttonText.SetText(config.Label);
+            _id = config.Label;
             OnClick = onClick;
         }
 

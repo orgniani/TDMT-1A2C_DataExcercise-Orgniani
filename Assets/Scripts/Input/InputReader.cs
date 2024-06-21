@@ -1,21 +1,20 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Events;
+using Core;
 
 namespace Input
 {
     public class InputReader : MonoBehaviour
     {
         [SerializeField] private InputActionAsset inputActions;
-        [SerializeField] private string moveActionName = "Move";
-        [SerializeField] private string runActionName = "Run";
 
         private InputAction moveAction;
         private InputAction runAction;
 
         private void OnEnable()
         {
-            moveAction = inputActions.FindAction(moveActionName);
+            moveAction = inputActions.FindAction(GameEvents.MoveAction);
 
             if (moveAction != null)
             {
@@ -23,7 +22,7 @@ namespace Input
                 moveAction.canceled += HandleMoveInput;
             }
 
-            runAction = inputActions.FindAction(runActionName);
+            runAction = inputActions.FindAction(GameEvents.RunAction);
 
             if (runAction != null)
             {
@@ -55,7 +54,7 @@ namespace Input
             Debug.Log($"{name}: Run input started");
 
             if (EventManager<string>.Instance)
-                EventManager<string>.Instance.InvokeEvent(runActionName, true);
+                EventManager<string>.Instance.InvokeEvent(GameEvents.RunAction, true);
         }
 
         private void HandleRunInputCanceled(InputAction.CallbackContext ctx)
@@ -64,7 +63,7 @@ namespace Input
             Debug.Log($"{name}: Run input canceled");
 
             if (EventManager<string>.Instance)
-                EventManager<string>.Instance.InvokeEvent(runActionName, false);
+                EventManager<string>.Instance.InvokeEvent(GameEvents.RunAction, false);
         }
 
         private void HandleMoveInput(InputAction.CallbackContext ctx)
@@ -74,7 +73,7 @@ namespace Input
             Vector3 inputDirection = ctx.ReadValue<Vector2>();
 
             if (EventManager<string>.Instance)
-                EventManager<string>.Instance.InvokeEvent(moveActionName, inputDirection);
+                EventManager<string>.Instance.InvokeEvent(GameEvents.MoveAction, inputDirection);
         }
     }
 }

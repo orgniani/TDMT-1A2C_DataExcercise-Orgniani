@@ -17,7 +17,6 @@ namespace Scenery
         [SerializeField] private float fakeLoadingTime = 1;
         [SerializeField] private float delayPerScene = 0.5f;
 
-
         private int[] _currentLevelIds;
 
         public event Action OnLoadStart = delegate { };
@@ -34,23 +33,11 @@ namespace Scenery
 
             if (sceneryManagerDataSource != null)
                 sceneryManagerDataSource.Value = this;
-
-            if (EventManager<IId>.Instance)
-            {
-                foreach (var loadId in allScenesIds)
-                {
-                    if (loadId == null) continue;
-                    EventManager<IId>.Instance.SubscribeToEvent(loadId, HandleLoadScenery);
-                }
-            }
         }
 
         private void Start()
         {
-            if (allScenesIds.Length > 0 && allScenesIds[0] != null)
-            {
-                _currentLevelIds = allScenesIds[0].SceneIndexes;
-            }
+            _currentLevelIds = new int[0];
         }
 
         private void OnDisable()
@@ -63,15 +50,6 @@ namespace Scenery
 
             if (sceneryManagerDataSource != null && sceneryManagerDataSource.Value == this)
                 sceneryManagerDataSource.Value = null;
-
-            if (EventManager<IId>.Instance)
-            {
-                foreach (var loadId in allScenesIds)
-                {
-                    if (loadId == null) continue;
-                    EventManager<IId>.Instance.UnsubscribeFromEvent(loadId, HandleLoadScenery);
-                }
-            }
         }
 
         private void HandleLoadScenery(params object[] args)

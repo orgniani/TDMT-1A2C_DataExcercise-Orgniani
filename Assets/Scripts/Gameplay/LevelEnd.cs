@@ -15,7 +15,7 @@ namespace Gameplay
             if (((1 << other.gameObject.layer) & playerLayer.value) != 0)
             {
                 if (EventManager<string>.Instance)
-                    EventManager<string>.Instance.InvokeEvent(GameEvents.Win, true);
+                    EventManager<string>.Instance.InvokeEvent(GameEvents.WinAction, true);
 
                 Debug.Log($"{name}: Player touched the flag!");
             }

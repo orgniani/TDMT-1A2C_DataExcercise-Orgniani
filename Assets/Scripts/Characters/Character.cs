@@ -33,7 +33,7 @@ namespace Characters
             //TODO: Raise event through event system telling the game to show the defeat sequence. | DONE
 
             if (EventManager<string>.Instance)
-                EventManager<string>.Instance.InvokeEvent(GameEvents.Lose, true);
+                EventManager<string>.Instance.InvokeEvent(GameEvents.LoseAction, true);
 
             Debug.Log($"{name}: received an attack!");
 

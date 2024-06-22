@@ -5,29 +5,46 @@ using Core;
 
 namespace Input
 {
+    [RequireComponent(typeof(PlayerInput))]
     public class InputReader : MonoBehaviour
     {
+        [Header("References")]
+        [Header("Inputs")]
         [SerializeField] private InputActionAsset inputActions;
 
-        private InputAction moveAction;
-        private InputAction runAction;
+        [Header("Logs")]
+        [SerializeField] private bool enableLogs = true;
+
+        private InputAction _moveAction;
+        private InputAction _runAction;
+
+        private void Awake()
+        {
+            if (!inputActions)
+            {
+                Debug.LogError($"{name}: {nameof(inputActions)} is null!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+        }
 
         private void OnEnable()
         {
-            moveAction = inputActions.FindAction(GameEvents.MoveAction);
+            _moveAction = inputActions.FindAction(GameEvents.MoveAction);
 
-            if (moveAction != null)
+            if (_moveAction != null)
             {
-                moveAction.performed += HandleMoveInput;
-                moveAction.canceled += HandleMoveInput;
+                _moveAction.performed += HandleMoveInput;
+                _moveAction.canceled += HandleMoveInput;
             }
 
-            runAction = inputActions.FindAction(GameEvents.RunAction);
+            _runAction = inputActions.FindAction(GameEvents.RunAction);
 
-            if (runAction != null)
+            if (_runAction != null)
             {
-                runAction.started += HandleRunInputStarted;
-                runAction.canceled += HandleRunInputCanceled;
+                _runAction.started += HandleRunInputStarted;
+                _runAction.canceled += HandleRunInputCanceled;
             }
 
             //TODO: Unsubscribe from events -SF | DONE
@@ -35,23 +52,23 @@ namespace Input
 
         private void OnDisable()
         {
-            if (moveAction != null)
+            if (_moveAction != null)
             {
-                moveAction.performed -= HandleMoveInput;
-                moveAction.canceled -= HandleMoveInput;
+                _moveAction.performed -= HandleMoveInput;
+                _moveAction.canceled -= HandleMoveInput;
             }
 
-            if (runAction != null)
+            if (_runAction != null)
             {
-                runAction.started -= HandleRunInputStarted;
-                runAction.canceled -= HandleRunInputCanceled;
+                _runAction.started -= HandleRunInputStarted;
+                _runAction.canceled -= HandleRunInputCanceled;
             }
         }
 
         private void HandleRunInputStarted(InputAction.CallbackContext ctx)
         {
             //TODO: Implement event logic | DONE
-            Debug.Log($"{name}: Run input started");
+            if (enableLogs) Debug.Log($"{name}: <color=magenta> Run input started </color>");
 
             if (EventManager<string>.Instance)
                 EventManager<string>.Instance.InvokeEvent(GameEvents.RunAction, true);
@@ -60,7 +77,7 @@ namespace Input
         private void HandleRunInputCanceled(InputAction.CallbackContext ctx)
         {
             //TODO: Implement event logic | DONE
-            Debug.Log($"{name}: Run input canceled");
+            if (enableLogs) Debug.Log($"{name}: <color=magenta> Run input canceled </color>");
 
             if (EventManager<string>.Instance)
                 EventManager<string>.Instance.InvokeEvent(GameEvents.RunAction, false);

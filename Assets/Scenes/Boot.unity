@@ -235,6 +235,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d818544a81e2b874fb292cf8ef9c5e4b, type: 2}
   fakeLoadingTime: 1
   delayPerScene: 0.5
+  enableLogs: 1
 --- !u!4 &188939471
 Transform:
   m_ObjectHideFlags: 0
@@ -518,7 +519,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -100, y: -100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &847038970
 MonoBehaviour:
@@ -757,6 +758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PrintTrace: 0
+  enableLogs: 1
 --- !u!4 &1819028550
 Transform:
   m_ObjectHideFlags: 0
@@ -785,6 +787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PrintTrace: 0
+  enableLogs: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

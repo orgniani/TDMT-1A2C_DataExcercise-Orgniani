@@ -269,7 +269,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   runningSpeed: 2
-  loseActionName: Lose
 --- !u!114 &1068601458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,8 +281,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ac5b6628c20b7a498f0e1095a455512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDistance: 3
   playerDataSource: {fileID: 11400000, guid: 1a74c3369aab0054eb119eb5c8be593e, type: 2}
+  attackDistance: 3
 --- !u!135 &1068601459
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1808,8 +1807,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4756ed8a25c06794191bd2acfce96082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelStart: {fileID: 1517859829}
   playerDataSource: {fileID: 11400000, guid: 1a74c3369aab0054eb119eb5c8be593e, type: 2}
+  levelStart: {fileID: 1517859829}
 --- !u!4 &1420981759
 Transform:
   m_ObjectHideFlags: 0

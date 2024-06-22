@@ -11,17 +11,55 @@ namespace Scenery
 {
     public class SceneryManager : MonoBehaviour
     {
-        [SerializeField] private DataSource<SceneryManager> sceneryManagerDataSource;
+        [Header("References")]
+        [Header("Data Sources")]
+        [SerializeField] private DataSource<SceneryManager> sceneryManagerDataSource; //TODO: I dont think this is particularly necesary -SF
+
+        [Header("Scenery Ids")]
         [SerializeField] private SceneryLoadId[] allScenesIds; //TODO: maybe i can do this better -SF
 
+        [Header("Parameters")]
+        [Header("Loading time")]
         [SerializeField] private float fakeLoadingTime = 1;
         [SerializeField] private float delayPerScene = 0.5f;
+
+        [Header("Logs")]
+        [SerializeField] private bool enableLogs = true;
 
         private int[] _currentLevelIds;
 
         public event Action OnLoadStart = delegate { };
         public event Action<float> OnLoadPercentage = delegate { };
         public event Action OnLoadEnd = delegate { };
+
+        private void Awake()
+        {
+            if (!sceneryManagerDataSource)
+            {
+                Debug.LogError($"{name}: {nameof(sceneryManagerDataSource)} is null!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+
+            foreach (SceneryLoadId scene in allScenesIds)
+            {
+                if(!scene)
+                {
+                    Debug.LogError($"{name}: a {nameof(scene)} is null!" +
+                                   $"\nDisabling component to avoid errors.");
+                    enabled = false;
+                }
+            }
+
+            if (allScenesIds.Length <= 0)
+            {
+                Debug.LogError($"{name}: the array of {nameof(allScenesIds)} is empty!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+        }
 
         private void OnEnable()
         {
@@ -122,7 +160,7 @@ namespace Scenery
 
                 if (loadOp == null)
                 {
-                    Debug.LogError($"Failed to load scene at index {sceneIndex}");
+                    if (enableLogs) Debug.LogError($"Failed to load scene at index {sceneIndex}");
                     continue;
                 }
 
@@ -154,7 +192,7 @@ namespace Scenery
 
                     if (unloadOp == null)
                     {
-                        Debug.LogError($"Failed to unload scene at index {sceneIndex}");
+                        if (enableLogs) Debug.LogError($"Failed to unload scene at index {sceneIndex}");
                         continue;
                     }
 
@@ -171,7 +209,8 @@ namespace Scenery
                 }
                 else
                 {
-                    Debug.Log($"Scene at index {sceneIndex} is not currently loaded. Skipping unload operation.");
+                    if (enableLogs) Debug.Log($"<color=purple> Scene at index {sceneIndex} is not currently loaded.\n" +
+                              $"Skipping unload operation. </color>");
                 }
             }
         }

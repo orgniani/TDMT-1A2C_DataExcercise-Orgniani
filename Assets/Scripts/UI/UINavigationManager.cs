@@ -9,24 +9,69 @@ using System.Linq;
 
 namespace UI
 {
-    public class NavigationManager : MonoBehaviour
+    public class UINavigationManager : MonoBehaviour
     {
-        [SerializeField] private string exitButtonId = "Exit";
+        [Header("References")]
+        [Header("Data Sources")]
+        [SerializeField] private DataSource<GameManager> gameManagerDataSource;
 
+        [Header("Menus")]
         [Tooltip("The first item on this list will be set as the default")]
         [SerializeField] private List<MenuWithId> menusWithId;
 
-        [SerializeField] private DataSource<GameManager> gameManagerDataSource;
-        [SerializeField] private List<ButtonConfig> buttonConfigs = new();
+        [Header("Buttons")]
+        [SerializeField] private List<UIButtonConfig> buttonConfigs = new();
+        [SerializeField] private string exitButtonId = "Exit";
+
+        [Header("Logs")]
+        [SerializeField] private bool enableLogs = true;
 
         private int _currentMenuIndex = 0;
 
         private void Awake()
         {
-            //TODO: NULL CHECK FOR EVERY SINGLE CLASS!! -SF
-            if (menusWithId == null || menusWithId.Count == 0)
+            if (!gameManagerDataSource)
             {
-                Debug.LogError($"{name}: MenusWithId list is null or empty!");
+                Debug.LogError($"{name}: {nameof(gameManagerDataSource)} is null!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+
+            foreach (var menu in menusWithId)
+            {
+                if (menu.MenuScript == null)
+                {
+                    Debug.LogError($"{name}: a {nameof(menu.MenuScript)} is null!" +
+                                   $"\nDisabling component to avoid errors.");
+                    enabled = false;
+                }
+            }
+
+            if (menusWithId.Count <= 0)
+            {
+                Debug.LogError($"{name}: the list of {nameof(menusWithId)} is empty!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+
+            foreach (var button in buttonConfigs)
+            {
+                if (button == null)
+                {
+                    Debug.LogError($"{name}: a {nameof(button)} is null!" +
+                                   $"\nDisabling component to avoid errors.");
+                    enabled = false;
+                }
+            }
+
+            if (buttonConfigs.Count <= 0)
+            {
+                Debug.LogError($"{name}: the list of {nameof(buttonConfigs)} is empty!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
             }
         }
 
@@ -47,17 +92,18 @@ namespace UI
             {
                 if (menuIds.Contains(menu.ID))
                 {
-                    Debug.LogWarning($"{name}: Menu ID {menu.ID} has already been added! \n Ignoring to avoid issues.");
+                    if (enableLogs) Debug.LogWarning($"{name}: Menu ID {menu.ID} has already been added! " +
+                                                     $"\n Ignoring to avoid issues.");
                     continue;
                 }
                 menuIds.Add(menu.ID);
 
-                menu.Menu.Setup();
-                menu.Menu.OnChangeMenu += HandleMenuOptions;
-                menu.Menu.gameObject.SetActive(false);
+                menu.MenuScript.Setup();
+                menu.MenuScript.OnChangeMenu += HandleMenuOptions;
+                menu.MenuScript.gameObject.SetActive(false);
             }
 
-            menusWithId[_currentMenuIndex].Menu.gameObject.SetActive(true);
+            menusWithId[_currentMenuIndex].MenuScript.gameObject.SetActive(true);
         }
 
         private void OnDisable()
@@ -93,7 +139,7 @@ namespace UI
             if (buttonConfigs.Any(config => config.Label == id) && gameManagerDataSource.Value != null)
             {
                 gameManagerDataSource.Value.HandlePlayGame();
-                menusWithId[_currentMenuIndex].Menu.gameObject.SetActive(false);
+                menusWithId[_currentMenuIndex].MenuScript.gameObject.SetActive(false);
             }
 
             for (var i = 0; i < menusWithId.Count; i++)
@@ -104,12 +150,12 @@ namespace UI
                 {
                     if (_currentMenuIndex >= menusWithId.Count)
                     {
-                        Debug.Log($"{name}: CurrentMenuIndex {_currentMenuIndex} is out of bounds.");
+                        if (enableLogs) Debug.Log($"{name}: Current menu index {_currentMenuIndex} is out of bounds.");
                         return;
                     }
 
-                    menusWithId[_currentMenuIndex].Menu.gameObject.SetActive(false);
-                    menuWithId.Menu.gameObject.SetActive(true);
+                    menusWithId[_currentMenuIndex].MenuScript.gameObject.SetActive(false);
+                    menuWithId.MenuScript.gameObject.SetActive(true);
                     _currentMenuIndex = i;
                     break;
                 }
@@ -129,7 +175,7 @@ namespace UI
         public struct MenuWithId
         {
             [field : SerializeField] public string ID { get; set; }
-            [field : SerializeField] public Menu Menu { get; set; }
+            [field : SerializeField] public UIMenu MenuScript { get; set; }
         }
     }
 }

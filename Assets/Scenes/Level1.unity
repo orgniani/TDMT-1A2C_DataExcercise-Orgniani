@@ -1079,8 +1079,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4756ed8a25c06794191bd2acfce96082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelStart: {fileID: 1517859829}
   playerDataSource: {fileID: 11400000, guid: 1a74c3369aab0054eb119eb5c8be593e, type: 2}
+  levelStart: {fileID: 1517859829}
 --- !u!4 &1420981759
 Transform:
   m_ObjectHideFlags: 0

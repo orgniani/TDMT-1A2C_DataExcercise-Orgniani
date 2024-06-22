@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 using Singleton;
 
@@ -10,16 +9,19 @@ namespace Events
     [DisallowMultipleComponent]
     public abstract class EventManager<IdT> : MonoBehaviourSingleton<EventManager<IdT>>
     {
+        [Header("Logs")]
+        [SerializeField] private bool enableLogs = true;
+
         private Dictionary<IdT, EventDelegate> _events = new();
         public void InvokeEvent(IdT eventIdentifier, params object[] args)
         {
             if (_events.TryGetValue(eventIdentifier, out var eventDelegate))
             {
                 eventDelegate?.Invoke(args);
-                Debug.Log($"{name}: Event ({eventIdentifier}) invoked");
+                if (enableLogs) Debug.Log($"{name}: Event <color=cyan>({eventIdentifier})</color> invoked");
             }
             else
-                Debug.LogWarning($"{name}: Event id ({eventIdentifier}) had no subscribers!");
+                if (enableLogs) Debug.LogWarning($"{name}: Event id <color=yellow>({eventIdentifier})</color> had no subscribers!");
         }
 
         public void SubscribeToEvent(IdT eventIdentifier, EventDelegate handler)
@@ -27,7 +29,7 @@ namespace Events
             if (!_events.TryAdd(eventIdentifier, handler))
                 _events[eventIdentifier] += handler;
             else
-                Debug.Log($"{name}: Event id ({eventIdentifier}) was added");
+                if (enableLogs) Debug.Log($"{name}: Event id <color=green>({eventIdentifier})</color> was added");
         }
 
         public void UnsubscribeFromEvent(IdT eventIdentifier, EventDelegate handler)
@@ -38,7 +40,7 @@ namespace Events
                 if (_events[eventIdentifier] == null)
                 {
                     _events.Remove(eventIdentifier);
-                    Debug.Log($"{name}: Event id ({eventIdentifier}) was removed");
+                    if (enableLogs) Debug.Log($"{name}: Event id <color=black>({eventIdentifier})</color> was removed");
                 }
             }
         }

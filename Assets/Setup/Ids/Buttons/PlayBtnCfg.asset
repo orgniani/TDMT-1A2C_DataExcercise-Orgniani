@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4373536b97f4c346b13c66bcbcc434d, type: 3}
+  m_Script: {fileID: 11500000, guid: 5eb853d03f5153744be5a5fc693f3a17, type: 3}
   m_Name: PlayBtnCfg
   m_EditorClassIdentifier: 
-  levelIds:
-  - {fileID: 11400000, guid: 89f7a24a038a38e4294681a14e6e0f77, type: 2}
-  - {fileID: 11400000, guid: e43307ceb61fbdc46b4d27da1e57bb9a, type: 2}
   <Label>k__BackingField: Play

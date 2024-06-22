@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   logName: World
   <SceneIndexes>k__BackingField: 02000000
+  <CanUnload>k__BackingField: 1

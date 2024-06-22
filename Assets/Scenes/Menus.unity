@@ -572,6 +572,7 @@ MonoBehaviour:
   buttonParent: {fileID: 638507308}
   buttonConfigs:
   - {fileID: 11400000, guid: 80a66cdf71c6e5e4f90cbf1025414e87, type: 2}
+  enableLogs: 1
 --- !u!1 &388480087
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,6 +695,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4f12cc385a4c9ed4ea6163665a1b950f, type: 2}
   - {fileID: 11400000, guid: 941a0f9f10efc6e41a20db470e63eef9, type: 2}
   - {fileID: 11400000, guid: c699a6dd44209344b8fd089307406e55, type: 2}
+  enableLogs: 1
 --- !u!1 &458504922
 GameObject:
   m_ObjectHideFlags: 0
@@ -731,6 +733,7 @@ MonoBehaviour:
   buttonConfigs:
   - {fileID: 11400000, guid: 80a66cdf71c6e5e4f90cbf1025414e87, type: 2}
   - {fileID: 11400000, guid: 1aa066ad64d61f0448979e30f469bdc6, type: 2}
+  enableLogs: 1
 --- !u!224 &458504924
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1970,6 +1973,7 @@ MonoBehaviour:
   buttonParent: {fileID: 30434495}
   buttonConfigs:
   - {fileID: 11400000, guid: 80a66cdf71c6e5e4f90cbf1025414e87, type: 2}
+  enableLogs: 1
 --- !u!1 &1491335514
 GameObject:
   m_ObjectHideFlags: 0
@@ -2019,23 +2023,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c30ef516ef5d77b42908ae7e3125ed24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exitButtonId: Exit
+  gameManagerDataSource: {fileID: 11400000, guid: f7c65f59e3bea6a489b5a45d60b1c9a1, type: 2}
   menusWithId:
   - <ID>k__BackingField: Main Menu
-    <Menu>k__BackingField: {fileID: 388480092}
+    <MenuScript>k__BackingField: {fileID: 388480092}
   - <ID>k__BackingField: Options
-    <Menu>k__BackingField: {fileID: 1462274429}
+    <MenuScript>k__BackingField: {fileID: 1462274429}
   - <ID>k__BackingField: Credits
-    <Menu>k__BackingField: {fileID: 276492856}
+    <MenuScript>k__BackingField: {fileID: 276492856}
   - <ID>k__BackingField: Win
-    <Menu>k__BackingField: {fileID: 1861204341}
+    <MenuScript>k__BackingField: {fileID: 1861204341}
   - <ID>k__BackingField: Lose
-    <Menu>k__BackingField: {fileID: 458504923}
-  gameManagerDataSource: {fileID: 11400000, guid: f7c65f59e3bea6a489b5a45d60b1c9a1, type: 2}
+    <MenuScript>k__BackingField: {fileID: 458504923}
   buttonConfigs:
   - {fileID: 11400000, guid: dbd286265f79bdf459b04de0978ae273, type: 2}
   - {fileID: 11400000, guid: 1aa066ad64d61f0448979e30f469bdc6, type: 2}
   - {fileID: 11400000, guid: c699a6dd44209344b8fd089307406e55, type: 2}
+  exitButtonId: Exit
+  enableLogs: 1
 --- !u!1 &1861204340
 GameObject:
   m_ObjectHideFlags: 0
@@ -2072,6 +2077,7 @@ MonoBehaviour:
   buttonParent: {fileID: 1415039951}
   buttonConfigs:
   - {fileID: 11400000, guid: 80a66cdf71c6e5e4f90cbf1025414e87, type: 2}
+  enableLogs: 1
 --- !u!224 &1861204342
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2442,6 +2448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputActions: {fileID: -944628639613478452, guid: c85e4913311d23148b946cba3e5176aa, type: 3}
+  enableLogs: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

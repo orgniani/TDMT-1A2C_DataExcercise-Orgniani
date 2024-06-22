@@ -9,6 +9,8 @@ namespace Gameplay
     [RequireComponent(typeof(Character))]
     public class PlayerController : MonoBehaviour
     {
+        [Header("References")]
+        [Header("Data Sources")]
         [SerializeField] private DataSource<PlayerController> playerDataSource;
 
         private Character _character;
@@ -26,6 +28,14 @@ namespace Gameplay
             if (_character)
             {
                 _character.enabled = false;
+            }
+
+            if (!playerDataSource)
+            {
+                Debug.LogError($"{name}: {nameof(playerDataSource)} is null!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
             }
         }
 
@@ -77,7 +87,7 @@ namespace Gameplay
         {
             if (args.Length > 0 && args[0] is bool shouldRun)
             {
-                    HandleRun(shouldRun);
+                HandleRun(shouldRun);
             }
         }
 

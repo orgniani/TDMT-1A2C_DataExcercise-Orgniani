@@ -7,11 +7,17 @@ namespace Characters
 {
     public class Character : MonoBehaviour, ISteerable, ITarget
     {
+        [Header("Parameters")]
+        [Header("Speed")]
         [SerializeField] private float speed = 2.5f;
         [SerializeField] private float runningSpeed = 5;
 
+        [Header("Logs")]
+        [SerializeField] private bool enableLogs = true;
+
         private Vector3 _currentDirection = Vector3.zero;
         private bool _isRunning = false;
+
 
         private void Update()
         {
@@ -35,8 +41,7 @@ namespace Characters
             if (EventManager<string>.Instance)
                 EventManager<string>.Instance.InvokeEvent(GameEvents.LoseAction, true);
 
-            Debug.Log($"{name}: received an attack!");
-
+            if (enableLogs) Debug.Log($"<color=red> {name}: received an attack! </color>");
             Destroy(gameObject);
         }
     }

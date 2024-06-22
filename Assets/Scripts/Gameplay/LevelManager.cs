@@ -6,10 +6,33 @@ namespace Gameplay
 {
     public class LevelManager : MonoBehaviour
     {
-        [SerializeField] private Transform levelStart;
+        [Header("References")]
+        [Header("Data Sources")]
         [SerializeField] private DataSource<PlayerController> playerDataSource;
+
+        [Header("Transforms")]
+        [SerializeField] private Transform levelStart;
         
         private PlayerController _playerController;
+
+        private void Awake()
+        {
+            if (!playerDataSource)
+            {
+                Debug.LogError($"{name}: {nameof(playerDataSource)} is null!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+
+            if (!levelStart)
+            {
+                Debug.LogError($"{name}: {nameof(levelStart)} is null!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+        }
 
         private IEnumerator Start()
         {
@@ -17,7 +40,7 @@ namespace Gameplay
             {
                 //TODO: Get reference to player controller from ReferenceManager/DataSource | DONE
 
-                if (playerDataSource != null && playerDataSource.Value != null)
+                if (playerDataSource.Value != null)
                     _playerController = playerDataSource.Value;
 
                 yield return null;

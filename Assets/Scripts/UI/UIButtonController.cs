@@ -6,7 +6,7 @@ using TMPro;
 namespace UI
 {
     [RequireComponent(typeof(Button))]
-    public sealed class ButtonController : MonoBehaviour
+    public sealed class UIButtonController : MonoBehaviour
     {
         [SerializeField] private TMP_Text buttonText;
 
@@ -51,7 +51,7 @@ namespace UI
             _button.onClick.RemoveListener(HandleButtonClick);
         }
 
-        public void Setup(ButtonConfig config, Action<string> onClick)
+        public void Setup(UIButtonConfig config, Action<string> onClick)
         {
             buttonText.SetText(config.Label);
             _id = config.Label;

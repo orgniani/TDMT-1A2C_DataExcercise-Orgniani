@@ -46,8 +46,6 @@ namespace Input
                 _runAction.started += HandleRunInputStarted;
                 _runAction.canceled += HandleRunInputCanceled;
             }
-
-            //TODO: Unsubscribe from events -SF | DONE
         }
 
         private void OnDisable()

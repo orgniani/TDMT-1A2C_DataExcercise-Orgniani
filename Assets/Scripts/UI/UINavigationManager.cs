@@ -30,49 +30,7 @@ namespace UI
 
         private void Awake()
         {
-            if (!gameManagerDataSource)
-            {
-                Debug.LogError($"{name}: {nameof(gameManagerDataSource)} is null!" +
-                               $"\nDisabling component to avoid errors.");
-                enabled = false;
-                return;
-            }
-
-            foreach (var menu in menusWithId)
-            {
-                if (menu.MenuScript == null)
-                {
-                    Debug.LogError($"{name}: a {nameof(menu.MenuScript)} is null!" +
-                                   $"\nDisabling component to avoid errors.");
-                    enabled = false;
-                }
-            }
-
-            if (menusWithId.Count <= 0)
-            {
-                Debug.LogError($"{name}: the list of {nameof(menusWithId)} is empty!" +
-                               $"\nDisabling component to avoid errors.");
-                enabled = false;
-                return;
-            }
-
-            foreach (var button in buttonConfigs)
-            {
-                if (button == null)
-                {
-                    Debug.LogError($"{name}: a {nameof(button)} is null!" +
-                                   $"\nDisabling component to avoid errors.");
-                    enabled = false;
-                }
-            }
-
-            if (buttonConfigs.Count <= 0)
-            {
-                Debug.LogError($"{name}: the list of {nameof(buttonConfigs)} is empty!" +
-                               $"\nDisabling component to avoid errors.");
-                enabled = false;
-                return;
-            }
+            ValidateReferences();
         }
 
         private void OnEnable()
@@ -176,6 +134,53 @@ namespace UI
         {
             [field : SerializeField] public string ID { get; set; }
             [field : SerializeField] public UIMenu MenuScript { get; set; }
+        }
+
+        private void ValidateReferences()
+        {
+            if (!gameManagerDataSource)
+            {
+                Debug.LogError($"{name}: {nameof(gameManagerDataSource)} is null!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+
+            foreach (var menu in menusWithId)
+            {
+                if (menu.MenuScript == null)
+                {
+                    Debug.LogError($"{name}: a {nameof(menu.MenuScript)} is null!" +
+                                   $"\nDisabling component to avoid errors.");
+                    enabled = false;
+                }
+            }
+
+            if (menusWithId.Count <= 0)
+            {
+                Debug.LogError($"{name}: the list of {nameof(menusWithId)} is empty!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+
+            foreach (var button in buttonConfigs)
+            {
+                if (button == null)
+                {
+                    Debug.LogError($"{name}: a {nameof(button)} is null!" +
+                                   $"\nDisabling component to avoid errors.");
+                    enabled = false;
+                }
+            }
+
+            if (buttonConfigs.Count <= 0)
+            {
+                Debug.LogError($"{name}: the list of {nameof(buttonConfigs)} is empty!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
         }
     }
 }

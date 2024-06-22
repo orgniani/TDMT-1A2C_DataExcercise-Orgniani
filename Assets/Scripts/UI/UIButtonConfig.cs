@@ -1,6 +1,4 @@
 using UnityEngine;
-using Scenery;
-using Events;
 
 namespace UI
 {

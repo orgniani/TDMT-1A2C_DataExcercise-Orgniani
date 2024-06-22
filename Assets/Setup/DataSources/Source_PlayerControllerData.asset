@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa6b3f1ba18f1c54e84956f7b9bd5849, type: 3}
-  m_Name: Source_PlayerControllerrData
+  m_Name: Source_PlayerControllerData
   m_EditorClassIdentifier: 

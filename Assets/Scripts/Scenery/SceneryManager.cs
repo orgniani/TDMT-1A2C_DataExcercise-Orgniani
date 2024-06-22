@@ -6,6 +6,7 @@ using DataSources;
 using Core;
 using Events;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Scenery
 {
@@ -13,10 +14,7 @@ namespace Scenery
     {
         [Header("References")]
         [Header("Data Sources")]
-        [SerializeField] private DataSource<SceneryManager> sceneryManagerDataSource; //TODO: I dont think this is particularly necesary -SF
-
-        [Header("Scenery Ids")]
-        [SerializeField] private SceneryLoadId[] allScenesIds; //TODO: maybe i can do this better -SF
+        [SerializeField] private DataSource<SceneryManager> sceneryManagerDataSource;
 
         [Header("Parameters")]
         [Header("Loading time")]
@@ -26,6 +24,7 @@ namespace Scenery
         [Header("Logs")]
         [SerializeField] private bool enableLogs = true;
 
+        private SceneryLoadId[] _allScenesIds;
         private int[] _currentLevelIds;
 
         public event Action OnLoadStart = delegate { };
@@ -41,24 +40,6 @@ namespace Scenery
                 enabled = false;
                 return;
             }
-
-            foreach (SceneryLoadId scene in allScenesIds)
-            {
-                if(!scene)
-                {
-                    Debug.LogError($"{name}: a {nameof(scene)} is null!" +
-                                   $"\nDisabling component to avoid errors.");
-                    enabled = false;
-                }
-            }
-
-            if (allScenesIds.Length <= 0)
-            {
-                Debug.LogError($"{name}: the array of {nameof(allScenesIds)} is empty!" +
-                               $"\nDisabling component to avoid errors.");
-                enabled = false;
-                return;
-            }
         }
 
         private void OnEnable()
@@ -69,8 +50,7 @@ namespace Scenery
                 EventManager<string>.Instance.SubscribeToEvent(GameEvents.UnloadScenery, HandleUnloadScenery);
             }
 
-            if (sceneryManagerDataSource != null)
-                sceneryManagerDataSource.Value = this;
+            sceneryManagerDataSource.Value = this;
         }
 
         private void Start()
@@ -86,9 +66,15 @@ namespace Scenery
                 EventManager<string>.Instance.UnsubscribeFromEvent(GameEvents.UnloadScenery, HandleUnloadScenery);
             }
 
-            if (sceneryManagerDataSource != null && sceneryManagerDataSource.Value == this)
+            if (sceneryManagerDataSource.Value == this)
                 sceneryManagerDataSource.Value = null;
         }
+
+        public void SetUp(SceneryLoadId[] sceneryLoadIds)
+        {
+            _allScenesIds = sceneryLoadIds;
+        }
+
 
         private void HandleLoadScenery(params object[] args)
         {
@@ -124,21 +110,21 @@ namespace Scenery
             OnLoadStart?.Invoke();
             OnLoadPercentage?.Invoke(0);
 
-            int unloadCount = unloadSceneIndexes.Length;
+            int unloadCount = unloadSceneIndexes?.Length ?? 0;
             int loadCount = loadSceneIndexes.Length;
             int totalCount = unloadCount + loadCount;
 
-            if(unloadSceneIndexes.Length > 0)
+            if (unloadSceneIndexes.Length > 0)
             {
                 yield return Unload(unloadSceneIndexes, currentIndex => OnLoadPercentage((float)currentIndex / totalCount));
 
                 yield return new WaitForSeconds(fakeLoadingTime);
 
-                _currentLevelIds = allScenesIds[0].SceneIndexes;
+                _currentLevelIds = _allScenesIds[0].SceneIndexes;
 
             }
 
-            if(loadSceneIndexes.Length > 0)
+            if (loadSceneIndexes.Length > 0)
             {
                 yield return Load(loadSceneIndexes, currentIndex => OnLoadPercentage((float)(currentIndex + unloadCount) / totalCount));
 
@@ -183,7 +169,7 @@ namespace Scenery
 
             foreach (var sceneIndex in sceneIndexes)
             {
-                var sceneryLoadId = allScenesIds.FirstOrDefault(s => s.SceneIndexes.Contains(sceneIndex));
+                var sceneryLoadId = _allScenesIds.FirstOrDefault(s => s.SceneIndexes.Contains(sceneIndex));
                 if (sceneryLoadId != null && !sceneryLoadId.CanUnload) continue;
 
                 if (SceneManager.GetSceneByBuildIndex(sceneIndex).isLoaded)

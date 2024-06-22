@@ -23,21 +23,7 @@ namespace AI
         {
             _steerable = GetComponent<ISteerable>();
 
-            if(_steerable == null)
-            {
-                Debug.LogError($"{name}: cannot find a {nameof(ISteerable)} component!" +
-                               $"\nDisabling component to avoid errors.");
-                enabled = false;
-                return;
-            }
-
-            if (!playerDataSource)
-            {
-                Debug.LogError($"{name}: {nameof(playerDataSource)} is null!" +
-                               $"\nDisabling component to avoid errors.");
-                enabled = false;
-                return;
-            }
+            ValidateReferences();
         }
 
         private void Start()
@@ -72,6 +58,25 @@ namespace AI
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, attackDistance);
+        }
+
+        private void ValidateReferences()
+        {
+            if (_steerable == null)
+            {
+                Debug.LogError($"{name}: cannot find a {nameof(ISteerable)} component!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+
+            if (!playerDataSource)
+            {
+                Debug.LogError($"{name}: {nameof(playerDataSource)} is null!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
         }
     }
 }

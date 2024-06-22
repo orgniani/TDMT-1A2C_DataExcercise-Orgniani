@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using DataSources;
+using Core.Interactions;
 
 namespace Gameplay
 {
@@ -17,6 +18,25 @@ namespace Gameplay
 
         private void Awake()
         {
+            ValidateReferences();
+        }
+
+        private IEnumerator Start()
+        {
+            while (_playerController == null)
+            {
+                //TODO: Get reference to player controller from ReferenceManager/DataSource | DONE
+
+                if (playerDataSource.Value != null)
+                    _playerController = playerDataSource.Value;
+
+                yield return null;
+            }
+            _playerController.SetPlayerAtLevelStartAndEnable(levelStart.position);
+        }
+
+        private void ValidateReferences()
+        {
             if (!playerDataSource)
             {
                 Debug.LogError($"{name}: {nameof(playerDataSource)} is null!" +
@@ -32,20 +52,6 @@ namespace Gameplay
                 enabled = false;
                 return;
             }
-        }
-
-        private IEnumerator Start()
-        {
-            while (_playerController == null)
-            {
-                //TODO: Get reference to player controller from ReferenceManager/DataSource | DONE
-
-                if (playerDataSource.Value != null)
-                    _playerController = playerDataSource.Value;
-
-                yield return null;
-            }
-            _playerController.SetPlayerAtLevelStartAndEnable(levelStart.position);
         }
     }
 }

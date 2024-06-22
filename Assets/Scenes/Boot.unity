@@ -228,11 +228,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneryManagerDataSource: {fileID: 11400000, guid: 39536954c436e27419221f9d81c74403, type: 2}
-  allScenesIds:
-  - {fileID: 11400000, guid: 5b30d16a037a82e4fa25ceb69eea443c, type: 2}
-  - {fileID: 11400000, guid: 89f7a24a038a38e4294681a14e6e0f77, type: 2}
-  - {fileID: 11400000, guid: e43307ceb61fbdc46b4d27da1e57bb9a, type: 2}
-  - {fileID: 11400000, guid: d818544a81e2b874fb292cf8ef9c5e4b, type: 2}
   fakeLoadingTime: 1
   delayPerScene: 0.5
   enableLogs: 1
@@ -297,6 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManagerDataSource: {fileID: 11400000, guid: f7c65f59e3bea6a489b5a45d60b1c9a1, type: 2}
+  sceneryManagerDataSource: {fileID: 11400000, guid: 39536954c436e27419221f9d81c74403, type: 2}
   menuScene: {fileID: 11400000, guid: 5b30d16a037a82e4fa25ceb69eea443c, type: 2}
   worldScene: {fileID: 11400000, guid: 89f7a24a038a38e4294681a14e6e0f77, type: 2}
   levels:

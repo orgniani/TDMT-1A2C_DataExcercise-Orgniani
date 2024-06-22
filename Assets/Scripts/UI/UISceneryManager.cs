@@ -22,21 +22,7 @@ namespace UI
         {
             _sceneryManager = GetComponent<SceneryManager>();
 
-            if (!loadingScreen)
-            {
-                Debug.LogError($"{name}: {nameof(loadingScreen)} is null!" +
-                               $"\nDisabling component to avoid errors.");
-                enabled = false;
-                return;
-            }
-
-            if (!loadingBarFill)
-            {
-                Debug.LogError($"{name}: {nameof(loadingBarFill)} is null!" +
-                               $"\nDisabling component to avoid errors.");
-                enabled = false;
-                return;
-            }
+            ValidateReferences();
         }
 
         private void OnEnable()
@@ -90,6 +76,24 @@ namespace UI
 
             loadingBarFill.fillAmount = to;
         }
-    }
 
+        private void ValidateReferences()
+        {
+            if (!loadingScreen)
+            {
+                Debug.LogError($"{name}: {nameof(loadingScreen)} is null!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+
+            if (!loadingBarFill)
+            {
+                Debug.LogError($"{name}: {nameof(loadingBarFill)} is null!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+        }
+    }
 }

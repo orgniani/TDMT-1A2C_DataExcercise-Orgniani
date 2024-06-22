@@ -1,7 +1,5 @@
-using Scenery;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 
 namespace UI
@@ -23,29 +21,7 @@ namespace UI
 
         private void Awake()
         {
-            if (!buttonPrefab)
-            {
-                Debug.LogError($"{name}: {nameof(buttonPrefab)} is null!" +
-                               $"\nDisabling component to avoid errors.");
-                enabled = false;
-                return;
-            }
-
-            if (!buttonParent)
-            {
-                Debug.LogError($"{name}: {nameof(buttonParent)} is null!" +
-                               $"\nDisabling component to avoid errors.");
-                enabled = false;
-                return;
-            }
-
-            if (buttonConfigs.Count <= 0)
-            {
-                Debug.LogError($"{name}: the list of {nameof(buttonConfigs)} is empty!" +
-                               $"\nDisabling component to avoid errors.");
-                enabled = false;
-                return;
-            }
+            ValidateReferences();
         }
 
         public void Setup()
@@ -76,6 +52,33 @@ namespace UI
         private void HandleButtonClick(string id)
         {
             OnChangeMenu?.Invoke(id);
+        }
+
+        private void ValidateReferences()
+        {
+            if (!buttonPrefab)
+            {
+                Debug.LogError($"{name}: {nameof(buttonPrefab)} is null!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+
+            if (!buttonParent)
+            {
+                Debug.LogError($"{name}: {nameof(buttonParent)} is null!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
+
+            if (buttonConfigs.Count <= 0)
+            {
+                Debug.LogError($"{name}: the list of {nameof(buttonConfigs)} is empty!" +
+                               $"\nDisabling component to avoid errors.");
+                enabled = false;
+                return;
+            }
         }
     }
 }

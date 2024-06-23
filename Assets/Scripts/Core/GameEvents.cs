@@ -10,5 +10,7 @@ namespace Core
 
         public const string MoveAction = "Move";
         public const string RunAction = "Run";
+
+        public const string ChangeMenuAction = "ChangeMenu";
     }
 }

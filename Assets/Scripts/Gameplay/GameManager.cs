@@ -4,7 +4,6 @@ using Scenery;
 using Events;
 using Core;
 using System.Collections;
-using System;
 
 namespace Gameplay
 {
@@ -62,6 +61,7 @@ namespace Gameplay
                 _sceneryManager.SetUp(_allSceneIds);
             }
 
+
             UnloadAllScenesOnStart();
 
             InvokeLoadSceneryEvent(menuScene.SceneIndexes);
@@ -106,6 +106,8 @@ namespace Gameplay
         public void HandlePlayGame()
         {
             IsFinalLevel = false;
+
+            _sceneryManager.ResetIdsToIndex0();
 
             _currentLevelIndex = 0;
             InvokeLoadSceneryEvent(worldScene.SceneIndexes);

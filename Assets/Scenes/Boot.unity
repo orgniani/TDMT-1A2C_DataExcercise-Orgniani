@@ -230,7 +230,7 @@ MonoBehaviour:
   sceneryManagerDataSource: {fileID: 11400000, guid: 39536954c436e27419221f9d81c74403, type: 2}
   fakeLoadingTime: 1
   delayPerScene: 0.5
-  enableLogs: 1
+  enableLogs: 0
 --- !u!4 &188939471
 Transform:
   m_ObjectHideFlags: 0
@@ -754,7 +754,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PrintTrace: 0
-  enableLogs: 1
+  enableLogs: 0
 --- !u!4 &1819028550
 Transform:
   m_ObjectHideFlags: 0

@@ -7,5 +7,7 @@ namespace UI
     {
         [field: SerializeField] public string Label { get; private set; }
 
+        [field: SerializeField] public bool IsExitButton { get; private set; } = false;
+
     }
 }

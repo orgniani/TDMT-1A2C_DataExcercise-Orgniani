@@ -6,7 +6,6 @@ using DataSources;
 using Core;
 using Events;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace Scenery
 {
@@ -53,11 +52,6 @@ namespace Scenery
             sceneryManagerDataSource.Value = this;
         }
 
-        private void Start()
-        {
-            _currentLevelIds = new int[0];
-        }
-
         private void OnDisable()
         {
             if (EventManager<string>.Instance)
@@ -72,21 +66,22 @@ namespace Scenery
 
         public void SetUp(SceneryLoadId[] sceneryLoadIds)
         {
+            _currentLevelIds = new int[0];
             _allScenesIds = sceneryLoadIds;
         }
 
+        public void ResetIdsToIndex0()
+        {
+            _currentLevelIds = _allScenesIds[0].SceneIndexes;
+        }
 
         private void HandleLoadScenery(params object[] args)
         {
             if (args.Length > 0 && args[0] is int[] newSceneIndexes)
             {
-                if (_currentLevelIds != null && _currentLevelIds.Length > 0)
+                if (_currentLevelIds != null)
                 {
                     StartCoroutine(UnloadAndLoadScenes(_currentLevelIds, newSceneIndexes));
-                }
-                else
-                {
-                    StartCoroutine(Load(newSceneIndexes, progress => OnLoadPercentage(progress)));
                 }
 
                 _currentLevelIds = newSceneIndexes;
@@ -117,22 +112,16 @@ namespace Scenery
             if (unloadSceneIndexes.Length > 0)
             {
                 yield return Unload(unloadSceneIndexes, currentIndex => OnLoadPercentage((float)currentIndex / totalCount));
-
                 yield return new WaitForSeconds(fakeLoadingTime);
-
-                _currentLevelIds = _allScenesIds[0].SceneIndexes;
-
             }
 
             if (loadSceneIndexes.Length > 0)
             {
                 yield return Load(loadSceneIndexes, currentIndex => OnLoadPercentage((float)(currentIndex + unloadCount) / totalCount));
-
                 yield return new WaitForSeconds(fakeLoadingTime);
-
-                _currentLevelIds = loadSceneIndexes;
             }
 
+            _currentLevelIds = loadSceneIndexes;
             OnLoadEnd?.Invoke();
         }
 
@@ -193,10 +182,11 @@ namespace Scenery
                     current++;
                     onLoadedSceneQtyChanged?.Invoke(current);
                 }
+
                 else
                 {
                     if (enableLogs) Debug.Log($"<color=purple> Scene at index {sceneIndex} is not currently loaded.\n" +
-                              $"Skipping unload operation. </color>");
+                                              $"Skipping unload operation. </color>");
                 }
             }
         }

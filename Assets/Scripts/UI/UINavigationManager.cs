@@ -21,7 +21,6 @@ namespace UI
 
         [Header("Buttons")]
         [SerializeField] private List<UIButtonConfig> buttonConfigs = new();
-        [SerializeField] private string exitButtonId = "Exit";
 
         [Header("Logs")]
         [SerializeField] private bool enableLogs = true;
@@ -39,6 +38,7 @@ namespace UI
             {
                 EventManager<string>.Instance.SubscribeToEvent(GameEvents.WinAction, HandleOpenWinMenu);
                 EventManager<string>.Instance.SubscribeToEvent(GameEvents.LoseAction, HandleOpenLoseMenu);
+                EventManager<string>.Instance.SubscribeToEvent(GameEvents.ChangeMenuAction, HandleMenuOptions);
             }
         }
 
@@ -85,16 +85,26 @@ namespace UI
                 HandleMenuOptions(GameEvents.LoseAction);
         }
 
+        private void HandleMenuOptions(params object[] args)
+        {
+            if (args.Length > 0 && args[0] is string id)
+            {
+                HandleMenuOptions(id);
+            }
+        }
+
 
         private void HandleMenuOptions(string id)
         {
-            if (id == exitButtonId) //TODO: Make this look better -SF
+            var buttonConfig = buttonConfigs.FirstOrDefault(config => config.Label == id);
+
+            if (buttonConfig != null && buttonConfig.IsExitButton)
             {
                 ExitGame();
                 return;
             }
 
-            if (buttonConfigs.Any(config => config.Label == id) && gameManagerDataSource.Value != null)
+            if (buttonConfig != null && gameManagerDataSource.Value != null)
             {
                 gameManagerDataSource.Value.HandlePlayGame();
                 menusWithId[_currentMenuIndex].MenuScript.gameObject.SetActive(false);

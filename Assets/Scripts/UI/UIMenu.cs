@@ -35,7 +35,7 @@ namespace UI
                     continue;
                 }
 
-                if (_addedButtonLabels.Contains(config.Label))
+                else if (_addedButtonLabels.Contains(config.Label))
                 {
                     if (enableLogs) Debug.LogWarning($"{name}: Button with label {config.Label} has already been added to the menu! " +
                                                      $"\n Ignoring to avoid issues.");

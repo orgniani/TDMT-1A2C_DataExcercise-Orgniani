@@ -298,6 +298,7 @@ MonoBehaviour:
   levels:
   - {fileID: 11400000, guid: e43307ceb61fbdc46b4d27da1e57bb9a, type: 2}
   - {fileID: 11400000, guid: d818544a81e2b874fb292cf8ef9c5e4b, type: 2}
+  enableLogs: 1
 --- !u!4 &363640404
 Transform:
   m_ObjectHideFlags: 0

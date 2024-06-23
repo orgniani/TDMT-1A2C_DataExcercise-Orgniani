@@ -3,7 +3,7 @@ using DataSources;
 using Scenery;
 using Events;
 using Core;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Gameplay
 {
@@ -18,6 +18,9 @@ namespace Gameplay
         [SerializeField] private SceneryLoadId menuScene;
         [SerializeField] private SceneryLoadId worldScene;
         [SerializeField] private SceneryLoadId[] levels;
+
+        [Header("Logs")]
+        [SerializeField] private bool enableLogs = true;
 
         private SceneryManager _sceneryManager;
         private SceneryLoadId[] _allSceneIds;
@@ -37,6 +40,21 @@ namespace Gameplay
             for (int i = 0; i < levels.Length; i++)
             {
                 _allSceneIds[2 + i] = levels[i];
+            }
+
+            var sceneIndexes = new List<int>();
+
+            foreach (var sceneId in _allSceneIds)
+            {
+                foreach (var index in sceneId.SceneIndexes)
+                {
+                    if (sceneIndexes.Contains(index))
+                    {
+                        if (enableLogs) Debug.LogWarning($"{name}: Scene index {index} has already been added!");
+                        continue;
+                    }
+                    sceneIndexes.Add(index);
+                }
             }
         }
 

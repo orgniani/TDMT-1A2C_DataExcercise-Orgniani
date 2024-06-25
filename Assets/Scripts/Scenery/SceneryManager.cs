@@ -105,7 +105,7 @@ namespace Scenery
             OnLoadStart?.Invoke();
             OnLoadPercentage?.Invoke(0);
 
-            int unloadCount = unloadSceneIndexes?.Length ?? 0;
+            int unloadCount = unloadSceneIndexes.Length;
             int loadCount = loadSceneIndexes.Length;
             int totalCount = unloadCount + loadCount;
 

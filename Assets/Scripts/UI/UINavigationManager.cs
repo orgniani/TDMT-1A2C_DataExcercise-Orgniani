@@ -38,7 +38,6 @@ namespace UI
             {
                 EventManager<string>.Instance.SubscribeToEvent(GameEvents.WinAction, HandleOpenWinMenu);
                 EventManager<string>.Instance.SubscribeToEvent(GameEvents.LoseAction, HandleOpenLoseMenu);
-                EventManager<string>.Instance.SubscribeToEvent(GameEvents.ChangeMenuAction, HandleMenuOptions);
             }
         }
 

@@ -84,6 +84,7 @@ namespace UI
                 HandleMenuOptions(GameEvents.LoseAction);
         }
 
+        /*
         private void HandleMenuOptions(params object[] args)
         {
             if (args.Length > 0 && args[0] is string id)
@@ -91,7 +92,7 @@ namespace UI
                 HandleMenuOptions(id);
             }
         }
-
+        */ //TODO: Change this
 
         private void HandleMenuOptions(string id)
         {

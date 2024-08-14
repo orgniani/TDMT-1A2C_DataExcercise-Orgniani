@@ -50,7 +50,7 @@ namespace Gameplay
             }
 
             //TODO: Set itself as player reference via ReferenceManager/DataSource | DONE
-            if (playerDataSource != null)
+            if (playerDataSource.Value == null)
                 playerDataSource.Value = this;
         }
 
@@ -65,7 +65,7 @@ namespace Gameplay
             }
 
             //TODO: Remove itself as player reference via reference manager/dataSource | DONE
-            if (playerDataSource != null)
+            if (playerDataSource.Value == this)
                 playerDataSource.Value = null;
         }
 

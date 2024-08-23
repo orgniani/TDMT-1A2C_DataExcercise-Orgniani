@@ -10,7 +10,7 @@ namespace AI
     {
         [Header("References")]
         [Header("Data Sources")]
-        [SerializeField] private DataSource<PlayerController> playerDataSource;
+        [SerializeField] private DataSource<Character> characterDataSource;
 
         [Header("Parameters")]
         [Header("Attack")]
@@ -28,10 +28,9 @@ namespace AI
 
         private void Start()
         {
-            if (playerDataSource.Value != null)
+            if (characterDataSource.Value != null)
             {
-                var playerController = playerDataSource.Value;
-                _target = playerController.Character;
+                _target = characterDataSource.Value;
             }
         }
 
@@ -70,9 +69,9 @@ namespace AI
                 return;
             }
 
-            if (!playerDataSource)
+            if (!characterDataSource)
             {
-                Debug.LogError($"{name}: {nameof(playerDataSource)} is null!" +
+                Debug.LogError($"{name}: {nameof(characterDataSource)} is null!" +
                                $"\nDisabling component to avoid errors.");
                 enabled = false;
                 return;

@@ -338,6 +338,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2.5
   runningSpeed: 5
+  enableLogs: 1
 --- !u!114 &2118192445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,6 +352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDataSource: {fileID: 11400000, guid: 1a74c3369aab0054eb119eb5c8be593e, type: 2}
+  characterDataSource: {fileID: 11400000, guid: f7c37bbbb1ebde34bad291f42289f86f, type: 2}
 --- !u!54 &2118192446
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -30,11 +30,9 @@ namespace Gameplay
                 if (playerDataSource.Value != null)
                     _playerController = playerDataSource.Value;
 
-                Debug.Log("SEARCHIN");
                 yield return null;
             }
             _playerController.SetPlayerAtLevelStartAndEnable(levelStart.position);
-            Debug.Log("FOUND");
         }
 
         private void ValidateReferences()

@@ -12,9 +12,9 @@ namespace Gameplay
         [Header("References")]
         [Header("Data Sources")]
         [SerializeField] private DataSource<PlayerController> playerDataSource;
+        [SerializeField] private DataSource<Character> characterDataSource;
 
         private Character _character;
-        public Character Character => _character;
 
         private void Reset()
         {
@@ -52,6 +52,9 @@ namespace Gameplay
             //TODO: Set itself as player reference via ReferenceManager/DataSource | DONE
             if (playerDataSource.Value == null)
                 playerDataSource.Value = this;
+
+            if (characterDataSource.Value == null)
+                characterDataSource.Value = _character;
         }
 
         private void OnDisable()
@@ -67,6 +70,9 @@ namespace Gameplay
             //TODO: Remove itself as player reference via reference manager/dataSource | DONE
             if (playerDataSource.Value == this)
                 playerDataSource.Value = null;
+
+            if (characterDataSource.Value == _character)
+                characterDataSource.Value = null;
         }
 
         public void SetPlayerAtLevelStartAndEnable(Vector3 levelStartPosition)

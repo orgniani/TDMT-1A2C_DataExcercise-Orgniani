@@ -269,6 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   runningSpeed: 2
+  enableLogs: 1
 --- !u!114 &1068601458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ac5b6628c20b7a498f0e1095a455512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDataSource: {fileID: 11400000, guid: 1a74c3369aab0054eb119eb5c8be593e, type: 2}
+  characterDataSource: {fileID: 11400000, guid: f7c37bbbb1ebde34bad291f42289f86f, type: 2}
   attackDistance: 3
 --- !u!135 &1068601459
 SphereCollider:

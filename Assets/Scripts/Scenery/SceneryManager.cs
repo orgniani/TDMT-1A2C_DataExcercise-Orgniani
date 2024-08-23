@@ -141,7 +141,6 @@ namespace Scenery
 
                 while (!loadOp.isDone)
                 {
-                    onLoadedSceneQtyChanged?.Invoke((float)current / sceneIndexes.Length);
                     yield return null;
                 }
 
@@ -173,7 +172,6 @@ namespace Scenery
 
                     while (!unloadOp.isDone)
                     {
-                        onLoadedSceneQtyChanged?.Invoke((float)current / sceneIndexes.Length);
                         yield return null;
                     }
 
